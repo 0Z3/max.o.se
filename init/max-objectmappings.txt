@@ -1,0 +1,7 @@
+max objectfile o.se.serve o.se;
+
+max objectfile o.se.o.pack o.se;
+max objectfile o.se.o.route o.se;
+max objectfile o.se.o.union o.se;
+max objectfile o.se.o.var o.se;
+max objectfile o.se.o.collect o.se;
