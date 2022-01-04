@@ -46,6 +46,10 @@
 /@/hook/inlet/finalize
 /
 /
+/!/make/bundle
+/@/inlet/right
+/
+/
 /'/!/makeoutlet
 /'/@/out
 /'/>/_e

@@ -54,13 +54,14 @@
 
 /* For debugging */
 #ifdef OSE_DEBUG
-static void pbndl(ose_bundle bundle, const char * const str)
 __attribute__((used))
+static void pbndl(ose_bundle bundle, const char * const str)
 {
     char buf[8192];
     memset(buf, 0, 8192);
     ose_pprintBundle(bundle, buf, 8192);
-    printf("\n%s>>>>>\n%s\n%s<<<<<\n", str, buf, str);
+    fprintf(stderr, "\n\r%s>>>>>\n\r%s\n\r%s<<<<<\n\r",
+            str, buf, str);
 }
 static void pbytes(ose_bundle bundle, int32_t start, int32_t end)
 __attribute__((used))
@@ -68,7 +69,7 @@ __attribute__((used))
     char *b = ose_getBundlePtr(bundle);
     for(int32_t i = start; i < end; i++)
     {
-        fprintf(stderr, "%d: %c %d\n", i,
+        fprintf(stderr, "%d: %c %d\n\r", i,
                 (unsigned char)b[i],
                 (unsigned char)b[i]);
     }
