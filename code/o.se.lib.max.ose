@@ -86,6 +86,14 @@
 /@/lib/inlet/0/exec
 /
 /
+/'/!/addresses
+/'/!/nip
+/'/!/gather
+/'/!/nip
+/!/bundle/all
+/@/lib/union
+/
+/
 /
 /'/!/clear
 /!/bundle/all
