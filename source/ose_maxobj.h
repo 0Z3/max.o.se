@@ -33,6 +33,8 @@ extern "C" {
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_obex_util.h"
+/* for t_pxjbox */
+#include "z_dsp.h"
 #include "ext_critical.h"
 
 #define OSE_MAXOBJ_HOOK_INIT_POST "/hook/init/post"
@@ -41,7 +43,7 @@ extern "C" {
 
 typedef struct _ose_maxobj
 {
-	t_object ob;
+	t_pxjbox ob;
 	t_critical lock;
 	
 	long inlet;

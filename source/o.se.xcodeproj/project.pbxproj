@@ -256,6 +256,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/max-sdk/source/c74support/max-includes\"",
 					"\"$(SRCROOT)/../../../..\"",
+					"\"$(SRCROOT)/max-sdk/source/c74support/msp-includes\"",
 				);
 				INSTALL_PATH = "$(SOURCE_ROOT)/../externals";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/max-sdk/source/c74support/max-includes\"";
@@ -322,6 +323,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/max-sdk/source/c74support/max-includes\"",
 					"\"$(SRCROOT)/../../../..\"",
+					"\"$(SRCROOT)/max-sdk/source/c74support/msp-includes\"",
 				);
 				INSTALL_PATH = "$(SOURCE_ROOT)/../externals";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/max-sdk/source/c74support/max-includes\"";
