@@ -21,8 +21,8 @@
   DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef OSE_LIBMAX_H
-#define OSE_LIBMAX_H
+#ifndef OSE_MAXGUI_H
+#define OSE_MAXGUI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,21 +33,34 @@ extern "C" {
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_obex_util.h"
+/* for t_pxjbox */
+#include "z_dsp.h"
+#include "ext_critical.h"
+#include "jpatcher_api.h"
+#include "jgraphics.h"
 
-void ose_libmax_load(ose_bundle osevm);
-void ose_libmax_outlet(ose_bundle osevm);
-void ose_libmax_makeoutlet(ose_bundle osevm);
-void ose_libmax_makeinlet(ose_bundle osevm);
-void ose_libmax_addTypedMethod(ose_bundle osevm);
-void ose_libmax_addUntypedMethod(ose_bundle osevm);
-void ose_libmax_addFunctionsToEnv(ose_bundle osevm);
+#include "ose_maxobj.h"
 
-void ose_libmax_addFunctionsToEnv(ose_bundle osevm);
-void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
-                                ose_bundle osevm,
-                                t_symbol *sym,
-                                long argc,
-                                t_atom *argv);
+typedef struct _ose_maxgui
+{
+    ose_maxobj ob;
+} ose_maxgui;
+
+#define OSE_MAXGUI_GET_OSEVM(x) (((ose_maxobj *)x)->osevm)
+
+void ose_maxgui_processArgs(ose_bundle osevm,
+                            t_symbol *sym,
+                            long argc,
+                            t_atom *argv);
+/* class and subclass */
+void ose_maxgui_loadSubclass(ose_maxgui *x, t_symbol *sym);
+/* default handlers for max messages */
+void ose_maxgui_init(ose_maxgui *x,
+                     t_symbol *sym,
+                     long argc,
+                     t_atom *argv,
+                     int32_t vmsize);
+void ose_maxgui_free(ose_maxgui *x);
 
 #ifdef __cplusplus
 }

@@ -448,6 +448,24 @@ void ose_maxobj_processArgs(ose_bundle osevm,
                        strlen(OSE_MAXOBJ_HOOK_INIT_POST));
 }
 
+/* class and subclass */
+
+void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym)
+{
+    if(sym->s_name[4])
+    {
+        char filename[MAX_PATH_CHARS];
+        snprintf(filename, MAX_PATH_CHARS,
+                 "%s.ose", sym->s_name + 5);
+        ose_pushMessage(x->vm_i, OSE_ADDRESS_ANONVAL,
+                        OSE_ADDRESS_ANONVAL_LEN,
+                        2,
+                        OSETT_STRING, filename,
+                        OSETT_STRING, "/!/load");
+        ose_maxobj_run(x);
+    }
+}
+
 /* default handlers for max messages */
 
 void ose_maxobj_FullPacket(ose_maxobj *x, long len, long ptr)

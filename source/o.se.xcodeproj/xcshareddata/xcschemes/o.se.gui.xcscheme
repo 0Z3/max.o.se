@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1010"
+   LastUpgradeVersion = "1300"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "52A1433A248465BB00C2059E"
-               BuildableName = "o.se.mxo"
-               BlueprintName = "o.se"
+               BlueprintIdentifier = "52D13B67278A2A00001299E5"
+               BuildableName = "o.se.gui.mxo"
+               BlueprintName = "o.se.gui"
                ReferencedContainer = "container:o.se.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,15 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52A1433A248465BB00C2059E"
-            BuildableName = "o.se.mxo"
-            BlueprintName = "o.se"
-            ReferencedContainer = "container:o.se.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -59,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "52A1433A248465BB00C2059E"
-            BuildableName = "o.se.mxo"
-            BlueprintName = "o.se"
+            BlueprintIdentifier = "52D13B67278A2A00001299E5"
+            BuildableName = "o.se.gui.mxo"
+            BlueprintName = "o.se.gui"
             ReferencedContainer = "container:o.se.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

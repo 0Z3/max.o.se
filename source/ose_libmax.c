@@ -294,19 +294,3 @@ void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
        - args the box was instantiated with
     */
 }
-
-void ose_libmax_loadSubclass(ose_maxobj *x, t_symbol *sym)
-{
-    if(sym->s_name[4])
-    {
-        char filename[MAX_PATH_CHARS];
-        snprintf(filename, MAX_PATH_CHARS,
-                 "%s.ose", sym->s_name + 5);
-        ose_pushMessage(x->vm_i, OSE_ADDRESS_ANONVAL,
-                        OSE_ADDRESS_ANONVAL_LEN,
-                        2,
-                        OSETT_STRING, filename,
-                        OSETT_STRING, "/!/load");
-        ose_maxobj_run(x);
-    }
-}

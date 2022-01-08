@@ -83,7 +83,7 @@ static void *o_se_new(t_symbol *sym, long argc, t_atom *argv)
     ose_libmax_addObjInfoToEnv(x, x->osevm, sym, argc, argv);
     ose_libmax_addFunctionsToEnv(x->osevm);
 
-    ose_libmax_loadSubclass(x, sym);
+    ose_maxobj_loadSubclass(x, sym);
 
     /* process args */
     ose_maxobj_processArgs(x->osevm, sym, argc, argv);
@@ -92,6 +92,7 @@ static void *o_se_new(t_symbol *sym, long argc, t_atom *argv)
 
 void ext_main(void *r)
 {
+    common_symbols_init();
     t_class *c;
 
     c = class_new("o.se",

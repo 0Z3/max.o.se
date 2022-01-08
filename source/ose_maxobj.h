@@ -115,6 +115,8 @@ void ose_maxobj_processArgs(ose_bundle osevm,
                             t_symbol *sym,
                             long argc,
                             t_atom *argv);
+/* class and subclass */
+void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym);
 /* default handlers for max messages */
 void ose_maxobj_FullPacket(ose_maxobj *x, long len, long ptr);
 void ose_maxobj_anything(ose_maxobj *x,
