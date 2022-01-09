@@ -61,6 +61,7 @@ void ose_maxgui_init(ose_maxgui *x,
                      t_atom *argv,
                      int32_t vmsize);
 void ose_maxgui_free(ose_maxgui *x);
+void ose_maxgui_enter(ose_maxgui *x);
 
 #ifdef __cplusplus
 }

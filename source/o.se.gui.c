@@ -76,28 +76,6 @@ void o_se_gui_paint(ose_maxgui *x, t_object *patcherview)
 
 }
 
-void o_se_gui_gettext(ose_maxgui *x)
-{
-	long size   = 0;
-    char *text  = NULL;
-
-    t_object *textfield = jbox_get_textfield((t_object *)x);
-    object_method(textfield, gensym("gettextptr"), &text, &size);
-    
-    /* ocompose_clearBundles(x); */
-    size = strlen(text); // the value returned in text doesn't make sense
-    if(size == 0)
-    {
-        return;
-    }
-    object_post((t_object *)x, "%s", text);
-}
-
-void o_se_gui_enter(ose_maxgui *x)
-{
-    o_se_gui_gettext(x);
-}
-
 static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
 {
     ose_maxgui *x = (ose_maxgui *)object_alloc(o_se_gui_class);
@@ -105,27 +83,21 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
     {
         return NULL;
     }
-
-    ose_maxgui_init(x, sym, argc, argv, O_SE_GUI_VMSIZE);
-
-    /* stdlib */
-    ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
-                               OSE_MAXGUI_GET_OSEVM(x),
-                               sym, argc, argv);
-    ose_libmax_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
-
-    ose_maxgui_loadSubclass(x, sym);
-
-    /* process args */
-    ose_maxgui_processArgs(OSE_MAXGUI_GET_OSEVM(x), sym, argc, argv);
-
-    /* set up jbox */
     t_dictionary *d = object_dictionaryarg(argc, argv);
     if(!d)
     {
         return NULL;
     }
-
+    /* { */
+    /*     t_symbol **keys; */
+    /*     long n = 0; */
+    /*     dictionary_getkeys(d, &n, &keys); */
+    /*     for(int i = 0; i < n; i++) */
+    /*     { */
+    /*         printf("%d: %s\n", i, keys[i]->s_name); */
+    /*     } */
+    /* } */
+    /* set up jbox */
     long boxflags = 0
         | JBOX_DRAWFIRSTIN
         | JBOX_NODRAWBOX
@@ -143,10 +115,30 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
         ;
     jbox_new((t_jbox *)x, boxflags, argc, argv);
     ((t_jbox *)x)->b_firstin = (void *)x;
+    
+    long ac = 0;
+    t_atom *av = NULL;
+    dictionary_getatoms(d, gensym("args"), &ac, &av);
+
+    ose_maxgui_init(x, sym, ac, av, O_SE_GUI_VMSIZE);
+
+    /* stdlib */
+    ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
+                               OSE_MAXGUI_GET_OSEVM(x),
+                               sym, ac, av);
+    ose_libmax_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
+
+    ose_maxgui_loadSubclass(x, sym);
+
+    /* process args */
+    ose_maxgui_processArgs(OSE_MAXGUI_GET_OSEVM(x), sym, ac, av);
+
+    
     t_object *textfield = jbox_get_textfield((t_object *)x);
     if(textfield)
     {
-        object_attr_setchar(textfield, gensym("editwhenunlocked"), 1);
+        object_attr_setchar(textfield,
+                            gensym("editwhenunlocked"), 1);
         textfield_set_editonclick(textfield, 0);
         textfield_set_textmargins(textfield, 5, 5, 15, 5);
         /* textfield_set_textcolor(textfield, &(x->text_color)); */
@@ -169,7 +161,7 @@ void ext_main(void *r)
     jbox_initclass(c,
                    JBOX_TEXTFIELD | JBOX_FIXWIDTH | JBOX_FONTATTR);
     class_addmethod(c, (method)o_se_gui_paint, "paint", A_CANT, 0);
-    class_addmethod(c, (method)o_se_gui_enter, "enter", A_CANT, 0);
+    class_addmethod(c, (method)ose_maxgui_enter, "enter", A_CANT, 0);
 
     /* 
        would like to add "anything" as object_addmethod, but it seems

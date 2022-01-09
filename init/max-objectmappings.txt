@@ -5,3 +5,5 @@ max objectfile o.se.o.route o.se;
 max objectfile o.se.o.union o.se;
 max objectfile o.se.o.var o.se;
 max objectfile o.se.o.collect o.se;
+
+max objectfile o.se.gui.o.compose o.se.gui;

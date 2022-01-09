@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-32",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 191.0, 569.0, 42.0, 22.0 ],
+					"text" : "debug"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-31",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
@@ -157,25 +169,12 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-26",
-					"linecount" : 2,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 561.0, 491.0, 291.0, 35.0 ],
-					"text" : "\"/x  : 10,\n/y  : [ 1, 2, 3 ]\""
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-24",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "FullPacket" ],
-					"patching_rect" : [ 417.0, 490.0, 72.0, 22.0 ],
+					"patching_rect" : [ 417.0, 569.0, 72.0, 22.0 ],
 					"text" : "o.route /text"
 				}
 
@@ -188,7 +187,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 166.0, 585.0, 454.0, 33.0 ]
+					"patching_rect" : [ 166.0, 664.0, 454.0, 33.0 ]
 				}
 
 			}
@@ -215,7 +214,7 @@
 					"numinlets" : 4,
 					"numoutlets" : 2,
 					"outlettype" : [ "FullPacket", "FullPacket" ],
-					"patching_rect" : [ 166.0, 536.0, 697.0, 22.0 ],
+					"patching_rect" : [ 166.0, 615.0, 697.0, 22.0 ],
 					"text" : "o.se.serve /@/numinlets 3 /@/numoutlets 2 /<</_e /!/load /s//Users/john/Development/0Z3/ose/modules/lang/oscbn/ose_oscbn.so"
 				}
 
@@ -1769,13 +1768,11 @@
 								"box" : 								{
 									"fontface" : 0,
 									"id" : "obj-3",
-									"linecount" : 6,
 									"maxclass" : "o.display",
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 478.0, 360.0, 176.0, 97.0 ],
-									"text" : "/foo : 0.41,\n/bar : {\n  /a : 10,\n  /b : [1, 2, 3]\n},\n/bloo : 0.37"
+									"patching_rect" : [ 478.0, 360.0, 176.0, 97.0 ]
 								}
 
 							}
@@ -1795,13 +1792,11 @@
 								"box" : 								{
 									"fontface" : 0,
 									"id" : "obj-18",
-									"linecount" : 11,
 									"maxclass" : "o.display",
 									"numinlets" : 1,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 121.0, 360.0, 176.0, 161.0 ],
-									"text" : "/foo : 0.41,\n/bar : blob(35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 47, 97, 0, 0, 44, 105, 0, 0, 0, 0, 0, 10, 0, 0, 0, 24, 47, 98, 0, 0, 44, 105, 105, 105, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3),\n/bloo : 0.37"
+									"patching_rect" : [ 121.0, 360.0, 176.0, 161.0 ]
 								}
 
 							}
@@ -2060,7 +2055,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 166.0, 436.0, 454.0, 33.0 ]
+					"patching_rect" : [ 166.0, 369.0, 454.0, 33.0 ]
 				}
 
 			}
@@ -2220,15 +2215,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-15", 1 ],
-					"order" : 1,
-					"source" : [ "obj-24", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-26", 1 ],
-					"order" : 0,
 					"source" : [ "obj-24", 0 ]
 				}
 
@@ -2258,6 +2244,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-15", 0 ],
+					"source" : [ "obj-32", 0 ]
 				}
 
 			}
