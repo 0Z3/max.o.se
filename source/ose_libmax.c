@@ -77,30 +77,9 @@ void ose_libmax_load(ose_bundle osevm)
         }
         else
         {
-            FILE *fp = fopen(absolutepath, "rb");
-            if(!fp)
-            {
-                object_error((t_object *)x,
-                             "couldn't open file %s",
-                             absolutepath);
-                return;
-            }
-            const int maxlen = 256;
-            char buf[maxlen];
-            ose_pushBundle(vm_i);
-            while(fgets(buf, maxlen, fp))
-            {
-                int len = strlen(buf);
-                if(buf[len - 1] == '\n')
-                {
-                    buf[len - 1] = 0;
-                }
-                ose_pushMessage(vm_i, buf, strlen(buf), 0);
-                ose_push(vm_i);
-            }
-            fclose(fp);
-            ose_drop(vm_s);
+            ose_readFileLines(vm_i, absolutepath);
             ose_popAllDrop(vm_i);
+            ose_drop(vm_s);
         }
     }
     else

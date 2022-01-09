@@ -1,14 +1,12 @@
 /s/o.se.lib.max.ose
 /!/load
 /!/clear
-/
-/
+
 /i/0
 /@/numinlets
 /i/0
 /@/numoutlets
-/
-/
+
 /'/!/lib/inlet/maken
 /'/</_e
 /'/!/lib/outlet/maken
@@ -17,8 +15,7 @@
 /'/</_e
 /!/bundle/all
 /@/hook/init/post
-/
-/
+
 /'/!/lib/inlet/store
 /'/>/_x
 /'/$/inlet/val
@@ -28,7 +25,7 @@
 /'/!/nth
 /'/!/assign
 /'/</_x
-/
+
 /'/!/make/bundle
 /'/$/lib/inlet/0/exec
 /'/!/blob/toelem
@@ -57,7 +54,7 @@
 /s/FullPacket
 /!/assign
 /</_e
-/
+
 /s/int
 /!/method/typed/add
 /s/float
@@ -68,7 +65,6 @@
 /!/method/typed/add
 /s/FullPacket
 /!/method/typed/add
-/
-/
+
 /$/lib/hook/inlet/finalize/default
 /@/hook/inlet/finalize
