@@ -1,19 +1,33 @@
 /s/o.se.lib.max.ose
 /!/load
 /!/clear
-/!/debug
 
 /s/ose_oscbn.so
 /!/load
 /<</_e
-/!/debug
 
 /i/0
 /@/numinlets
 /!/makeinlet
 
-/'/!/makeoutlet
-/'/@/out
+/!/makeoutlet
+/@/out
+
+/'/!/drop
+/'/!/oscbn/parse
+/'/>/_e
+/'/!/swap
+/'/!/exec
+/'/!/drop
+/'/$/out
+/'/!/outlet
+/!/bundle/all
+/s/enter
+/!/@
+
+/$/lib/hook/inlet/finalize/default
+/@/hook/inlet/finalize
+
 /'/>/_e
 /'/</_x
 /'/!/make/bundle
