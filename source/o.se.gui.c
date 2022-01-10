@@ -162,6 +162,8 @@ void ext_main(void *r)
                    JBOX_TEXTFIELD | JBOX_FIXWIDTH | JBOX_FONTATTR);
     class_addmethod(c, (method)o_se_gui_paint, "paint", A_CANT, 0);
     class_addmethod(c, (method)ose_maxgui_enter, "enter", A_CANT, 0);
+    class_addmethod(c, (method)ose_maxgui_mousedown, "mousedown",
+                    A_CANT, 0);
 
     /* 
        would like to add "anything" as object_addmethod, but it seems

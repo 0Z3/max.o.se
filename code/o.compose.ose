@@ -13,24 +13,38 @@
 /!/makeoutlet
 /@/out
 
-/'/!/drop
+/#/ the previous bundle will be just below the new text
+/#/ on the stack. rather than just nip'ing it, this will
+/#/ ensure that if there's anything else, we get rid of
+/#/ it as well
+/'/!/bundle/all
+/'/!/pop
+/'/!/nip
 /'/!/oscbn/parse
-/'/>/_e
-/'/!/swap
-/'/!/exec
-/'/!/drop
-/'/$/out
-/'/!/outlet
 /!/bundle/all
 /s/enter
 /!/@
 
-/$/lib/hook/inlet/finalize/default
-/@/hook/inlet/finalize
+/#/ drop modifiers
+/'/!/drop
+/#/ drop x and y pos
+/'/!/2drop
+/'/!/dup
+/'/$/out
+/'/!/outlet
+/!/bundle/all
+/s/mousedown
+/!/@
+
+/'/!/drop
+/!/bundle/all
+/@/hook/gui/finalize
 
 /'/>/_e
 /'/</_x
 /'/!/make/bundle
 /'/</_e
+/#/ start with an empty bundle on the stack
+/'/!/make/bundle
 /!/bundle/all
 /@/hook/init/post

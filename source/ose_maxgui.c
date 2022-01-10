@@ -110,7 +110,8 @@ void ose_maxgui_free(ose_maxgui *x)
 
 void ose_maxgui_enter(ose_maxgui *x)
 {
-    ose_bundle vm_s = OSEVM_STACK(OSE_MAXGUI_GET_OSEVM(x));
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
 	long size   = 0;
     char *text  = NULL;
 
@@ -123,9 +124,21 @@ void ose_maxgui_enter(ose_maxgui *x)
     {
         return;
     }
-    object_post((t_object *)x, "%s", text);
     ose_pushString(vm_s, text);
-    ose_pushString(vm_s, "enter");
     ose_maxgui_methodFinalize(x, "enter", strlen("enter"));
 }
 
+void ose_maxgui_mousedown(ose_maxgui *x,
+                          t_object *patcherview,
+                          t_pt pt, long modifiers)
+{
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_pushMessage(vm_s, "/y", strlen("/y"),
+                    1, OSETT_INT32, pt.y);
+    ose_pushMessage(vm_s, "/x", strlen("/x"),
+                    1, OSETT_INT32, pt.x);
+    ose_pushMessage(vm_s, "/modifiers", strlen("/modifiers"),
+                    1, OSETT_INT32, modifiers);
+    ose_maxgui_methodFinalize(x, "mousedown", strlen("mousedown"));
+}

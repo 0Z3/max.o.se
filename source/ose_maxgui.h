@@ -62,6 +62,9 @@ void ose_maxgui_init(ose_maxgui *x,
                      int32_t vmsize);
 void ose_maxgui_free(ose_maxgui *x);
 void ose_maxgui_enter(ose_maxgui *x);
+void ose_maxgui_mousedown(ose_maxgui *x,
+                          t_object *patcherview,
+                          t_pt pt, long modifiers);
 
 #ifdef __cplusplus
 }
