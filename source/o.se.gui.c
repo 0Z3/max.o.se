@@ -48,6 +48,7 @@
 #include "ose_maxobj.h"
 #include "ose_maxgui.h"
 #include "ose_libmax.h"
+#include "ose_libmaxgui.h"
 
 #ifndef O_SE_GUI_VMSIZE
 #define O_SE_GUI_VMSIZE 524288
@@ -115,6 +116,8 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
         ;
     jbox_new((t_jbox *)x, boxflags, argc, argv);
     ((t_jbox *)x)->b_firstin = (void *)x;
+
+    attr_dictionary_process(x, d);
     
     long ac = 0;
     t_atom *av = NULL;
@@ -126,7 +129,11 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
     ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
                                OSE_MAXGUI_GET_OSEVM(x),
                                sym, ac, av);
+    ose_libmaxgui_addObjInfoToEnv((ose_maxobj *)x,
+                                  OSE_MAXGUI_GET_OSEVM(x),
+                                  sym, ac, av);
     ose_libmax_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
+    ose_libmaxgui_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
 
     ose_maxgui_loadSubclass(x, sym);
 
@@ -181,6 +188,10 @@ void ext_main(void *r)
 #ifdef OSE_DEBUG
     class_addmethod(c, (method)ose_maxobj_debugFromMax, "debug", 0);
 #endif
+
+    CLASS_ATTR_SYM(c, "o.se_initfile", 0, ose_maxgui, filename);
+    CLASS_ATTR_SAVE(c, "o.se_initfile", 0);
+    CLASS_ATTR_INVISIBLE(c, "o.se_initfile", 0);
     
     class_register(CLASS_BOX, c);
     o_se_gui_class = c;

@@ -42,6 +42,7 @@
 		52D13B86278A461C001299E5 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B84278A461C001299E5 /* commonsyms.c */; };
 		52D13B88278A4626001299E5 /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D13B87278A4625001299E5 /* MaxAPI.framework */; };
 		52D13B89278A4626001299E5 /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D13B87278A4625001299E5 /* MaxAPI.framework */; };
+		52D13B8E278C5591001299E5 /* ose_libmaxgui.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B8D278C5591001299E5 /* ose_libmaxgui.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		52D13B82278A33B7001299E5 /* ose_maxgui.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ose_maxgui.c; sourceTree = "<group>"; };
 		52D13B84278A461C001299E5 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "max-sdk-base/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
 		52D13B87278A4625001299E5 /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = "max-sdk-base/c74support/max-includes/MaxAPI.framework"; sourceTree = "<group>"; };
+		52D13B8D278C5591001299E5 /* ose_libmaxgui.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ose_libmaxgui.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				52D13B612789EEA9001299E5 /* ose_maxobj.c */,
 				52D13B82278A33B7001299E5 /* ose_maxgui.c */,
 				52D13B632789FD99001299E5 /* ose_libmax.c */,
+				52D13B8D278C5591001299E5 /* ose_libmaxgui.c */,
 				52C5966125CDC7D600F9E21F /* ose_assert.c */,
 				52C5965C25CDC7D600F9E21F /* ose_builtins.c */,
 				52C5965D25CDC7D600F9E21F /* ose_context.c */,
@@ -286,6 +289,7 @@
 				52D13B71278A2A00001299E5 /* ose_print.c in Sources */,
 				52D13B72278A2A00001299E5 /* ose_load.c in Sources */,
 				52D13B73278A2A00001299E5 /* ose_match.c in Sources */,
+				52D13B8E278C5591001299E5 /* ose_libmaxgui.c in Sources */,
 				52D13B74278A2A00001299E5 /* ose_time.c in Sources */,
 				52D13B75278A2A00001299E5 /* ose_context.c in Sources */,
 				52D13B76278A2A00001299E5 /* ose_stackops.c in Sources */,

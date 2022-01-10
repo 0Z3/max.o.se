@@ -193,7 +193,7 @@ void ose_maxobj_runHook(ose_bundle osevm,
         ose_pushMessage(vm_i, "/!/exec", strlen("/!/exec"), 0);
         osevm_run(osevm);
         ose_replaceBundle(vm_s, vm_e);
-        ose_clear(vm_s);
+        /* ose_clear(vm_s); */
     }
     else
     {
@@ -450,6 +450,17 @@ void ose_maxobj_processArgs(ose_bundle osevm,
 
 /* class and subclass */
 
+void ose_maxobj_loadSubclass_impl(ose_maxobj *x,
+                                  const char * const filename)
+{
+    ose_pushMessage(x->vm_i, OSE_ADDRESS_ANONVAL,
+                    OSE_ADDRESS_ANONVAL_LEN,
+                    2,
+                    OSETT_STRING, filename,
+                    OSETT_STRING, "/!/load");
+    ose_maxobj_run(x);
+}
+
 void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym)
 {
     if(sym->s_name[4])
@@ -457,12 +468,7 @@ void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym)
         char filename[MAX_PATH_CHARS];
         snprintf(filename, MAX_PATH_CHARS,
                  "%s.ose", sym->s_name + 5);
-        ose_pushMessage(x->vm_i, OSE_ADDRESS_ANONVAL,
-                        OSE_ADDRESS_ANONVAL_LEN,
-                        2,
-                        OSETT_STRING, filename,
-                        OSETT_STRING, "/!/load");
-        ose_maxobj_run(x);
+        ose_maxobj_loadSubclass_impl(x, filename);
     }
 }
 

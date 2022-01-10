@@ -21,8 +21,8 @@
   DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef OSE_MAXGUI_H
-#define OSE_MAXGUI_H
+#ifndef OSE_LIBMAXGUI_H
+#define OSE_LIBMAXGUI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,40 +33,19 @@ extern "C" {
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_obex_util.h"
-/* for t_pxjbox */
-#include "z_dsp.h"
-#include "ext_critical.h"
 #include "jpatcher_api.h"
 #include "jgraphics.h"
 
-#include "ose_maxobj.h"
+void ose_libmaxgui_gettext(ose_bundle osevm);
+void ose_libmaxgui_settext(ose_bundle osevm);
+void ose_libmaxgui_refresh(ose_bundle osevm);
 
-typedef struct _ose_maxgui
-{
-    ose_maxobj ob;
-    t_symbol *filename;
-} ose_maxgui;
-
-#define OSE_MAXGUI_GET_OSEVM(x) (((ose_maxobj *)x)->osevm)
-
-void ose_maxgui_processArgs(ose_bundle osevm,
-                            t_symbol *sym,
-                            long argc,
-                            t_atom *argv);
-/* class and subclass */
-void ose_maxgui_loadSubclass(ose_maxgui *x, t_symbol *sym);
-/* default handlers for max messages */
-void ose_maxgui_init(ose_maxgui *x,
-                     t_symbol *sym,
-                     long argc,
-                     t_atom *argv,
-                     int32_t vmsize);
-void ose_maxgui_free(ose_maxgui *x);
-void ose_maxgui_gettext(ose_maxgui *x);
-void ose_maxgui_enter(ose_maxgui *x);
-void ose_maxgui_mousedown(ose_maxgui *x,
-                          t_object *patcherview,
-                          t_pt pt, long modifiers);
+void ose_libmaxgui_addFunctionsToEnv(ose_bundle osevm);
+void ose_libmaxgui_addObjInfoToEnv(ose_maxobj *x,
+                                   ose_bundle osevm,
+                                   t_symbol *sym,
+                                   long argc,
+                                   t_atom *argv);
 
 #ifdef __cplusplus
 }

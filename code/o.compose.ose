@@ -40,11 +40,37 @@
 /!/bundle/all
 /@/hook/gui/finalize
 
+/#/ store our env in the _x bundle
 /'/>/_e
 /'/</_x
 /'/!/make/bundle
 /'/</_e
-/#/ start with an empty bundle on the stack
+
+/#/ get whatever text is in the box at instantiation time.
+/#/ if it's an empty string, push an empty bundle onto the stack.
+/#/ otherwise parse the text
+
+/'/!/gettext
+/'/!/dup
+
+/#/ else
+/!/make/bundle
+/'/!/oscbn/parse
+/!/push
+
+/#/ then
+/!/make/bundle
+/'/!/drop
+/!/push
 /'/!/make/bundle
+/!/push
+
+/#/ get a copy of the text and compare it to the empty string
+/'/!/rot
+/'/s/
+/'/!/eql
+/'/!/if
+/#/ if uses /!/exec, which leaves a copy of the env on the stack
+/'/!/drop
 /!/bundle/all
 /@/hook/init/post

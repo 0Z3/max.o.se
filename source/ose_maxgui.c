@@ -56,12 +56,12 @@ void ose_maxgui_loadSubclass(ose_maxgui *x, t_symbol *sym)
         char filename[MAX_PATH_CHARS];
         snprintf(filename, MAX_PATH_CHARS,
                  "%s.ose", sym->s_name + 9);
-        ose_pushMessage(vm_i, OSE_ADDRESS_ANONVAL,
-                        OSE_ADDRESS_ANONVAL_LEN,
-                        2,
-                        OSETT_STRING, filename,
-                        OSETT_STRING, "/!/load");
-        ose_maxobj_run(x);
+        ose_maxobj_loadSubclass_impl(x, filename);
+        x->filename = gensym(filename);
+    }
+    else if(x->filename)
+    {
+        ose_maxobj_loadSubclass_impl(x, x->filename->s_name);
     }
 }
 
@@ -108,7 +108,7 @@ void ose_maxgui_free(ose_maxgui *x)
     ose_maxobj_free((ose_maxgui *)x);
 }
 
-void ose_maxgui_enter(ose_maxgui *x)
+void ose_maxgui_gettext(ose_maxgui *x)
 {
     ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
     ose_bundle vm_s = OSEVM_STACK(osevm);
@@ -119,12 +119,17 @@ void ose_maxgui_enter(ose_maxgui *x)
     object_method(textfield, gensym("gettextptr"), &text, &size);
 
     /* size returned by object_method is bogus */
-    size = strlen(text);
-    if(size == 0)
-    {
-        return;
-    }
+    /* size = strlen(text); */
+    /* if(size == 0) */
+    /* { */
+    /*     return; */
+    /* } */
     ose_pushString(vm_s, text);
+}
+
+void ose_maxgui_enter(ose_maxgui *x)
+{
+    ose_maxgui_gettext(x);
     ose_maxgui_methodFinalize(x, "enter", strlen("enter"));
 }
 
@@ -135,9 +140,9 @@ void ose_maxgui_mousedown(ose_maxgui *x,
     ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_pushMessage(vm_s, "/y", strlen("/y"),
-                    1, OSETT_INT32, pt.y);
+                    1, OSETT_FLOAT, pt.y);
     ose_pushMessage(vm_s, "/x", strlen("/x"),
-                    1, OSETT_INT32, pt.x);
+                    1, OSETT_FLOAT, pt.x);
     ose_pushMessage(vm_s, "/modifiers", strlen("/modifiers"),
                     1, OSETT_INT32, modifiers);
     ose_maxgui_methodFinalize(x, "mousedown", strlen("mousedown"));
