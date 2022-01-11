@@ -5,6 +5,7 @@ max objectfile o.se.o.collect o.se;
 max objectfile o.se.o.gather o.se;
 max objectfile o.se.o.pack o.se;
 max objectfile o.se.o.prepend o.se;
+max objectfile o.se.o.print o.se;
 max objectfile o.se.o.route o.se;
 max objectfile o.se.o.union o.se;
 max objectfile o.se.o.var o.se;

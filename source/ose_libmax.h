@@ -34,14 +34,6 @@ extern "C" {
 #include "ext_obex.h"
 #include "ext_obex_util.h"
 
-void ose_libmax_load(ose_bundle osevm);
-void ose_libmax_outlet(ose_bundle osevm);
-void ose_libmax_makeoutlet(ose_bundle osevm);
-void ose_libmax_makeinlet(ose_bundle osevm);
-void ose_libmax_addTypedMethod(ose_bundle osevm);
-void ose_libmax_addUntypedMethod(ose_bundle osevm);
-void ose_libmax_addFunctionsToEnv(ose_bundle osevm);
-
 void ose_libmax_addFunctionsToEnv(ose_bundle osevm);
 void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
                                 ose_bundle osevm,

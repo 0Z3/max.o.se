@@ -35,7 +35,7 @@
 
 #include "ose_maxobj.h"
 
-void ose_libmax_load(ose_bundle osevm)
+static void ose_libmax_load(ose_bundle osevm)
 {
     ose_maxobj *x =
         (ose_maxobj *)*((intptr_t *)(ose_getBundlePtr(osevm)
@@ -89,7 +89,7 @@ void ose_libmax_load(ose_bundle osevm)
     }
 }
 
-void ose_libmax_outlet(ose_bundle osevm)
+static void ose_libmax_outlet(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     if(!x)
@@ -127,14 +127,14 @@ void ose_libmax_outlet(ose_bundle osevm)
     ose_drop(vm_s);
 }
 
-void ose_libmax_makeoutlet(ose_bundle osevm)
+static void ose_libmax_makeoutlet(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     void *outlet = outlet_new(x, "FullPacket");
     ose_pushAlignedPtr(x->vm_s, outlet);
 }
 
-void ose_libmax_makeinlet(ose_bundle osevm)
+static void ose_libmax_makeinlet(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     x->proxies[x->nproxies]
@@ -149,7 +149,7 @@ void ose_libmax_makeinlet(ose_bundle osevm)
    though we can't. Later, we can add a code gen or jit stage that
    will do them for real.
 */
-void ose_libmax_addTypedMethod(ose_bundle osevm)
+static void ose_libmax_addTypedMethod(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = x->vm_s;
@@ -211,7 +211,7 @@ void ose_libmax_addTypedMethod(ose_bundle osevm)
     }
 }
 
-void ose_libmax_addUntypedMethod(ose_bundle osevm)
+static void ose_libmax_addUntypedMethod(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = x->vm_s;
@@ -235,6 +235,26 @@ void ose_libmax_addUntypedMethod(ose_bundle osevm)
     }
 }
 
+static void ose_libmax_post(ose_bundle osevm)
+{
+    ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 1) == OSETT_TRUE
+       && ose_peekType(vm_s) == OSETT_MESSAGE
+       && ose_peekMessageArgType(vm_s) == OSETT_STRING)
+    {
+        const char * const str = ose_peekString(vm_s);
+        object_post((t_object *)x, "%s", str);
+        return;
+    }
+    else
+    {
+        object_error((t_object *)x,
+                     "/print expects a message "
+                     "containing a string");
+    }
+}
+
 /* initialization functions */
 void ose_libmax_addFunctionsToEnv(ose_bundle osevm)
 {
@@ -253,6 +273,8 @@ void ose_libmax_addFunctionsToEnv(ose_bundle osevm)
                     OSETT_ALIGNEDPTR, ose_libmax_makeoutlet);
     ose_pushMessage(vm_e, "/makeinlet", strlen("/makeinlet"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_makeinlet);
+    ose_pushMessage(vm_e, "/post", strlen("/post"), 1,
+                    OSETT_ALIGNEDPTR, ose_libmax_post);
 #ifdef OSE_DEBUG
     ose_pushMessage(vm_e, "/debug", strlen("/debug"), 1,
                     OSETT_ALIGNEDPTR, ose_maxobj_debugFromVM);
