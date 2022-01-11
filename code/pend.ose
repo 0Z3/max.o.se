@@ -1,0 +1,107 @@
+/s/o.se.lib.max.ose
+/!/load
+/!/clear
+
+/i/0
+/@/numinlets
+
+/!/makeoutlet
+/@/out
+
+/#/ ############################################################
+/#/ append procedure
+/#/ ############################################################
+/'/!/pop
+/'/!/address
+/'/!/push
+/'/$/xfix
+/'/!/push
+/'/!/concat/strings
+/'/!/string/toaddress/move
+/'/!/swap
+/!/bundle/all
+/@/append
+
+/#/ ############################################################
+/#/ prepend procedure
+/#/ ############################################################
+/'/!/pop
+/'/$/xfix
+/'/!/push
+/'/!/address
+/'/!/push
+/'/!/concat/strings
+/'/!/string/toaddress/move
+/'/!/swap
+/!/bundle/all
+/@/prepend
+
+/#/ drop the inlet number
+/'/!/drop
+/'/!/count/items
+/'/$/pend
+/'/!/blob/toelem
+/'/!/swap
+/'/!/dotimes
+/'/!/drop
+/'/!/bundle/all
+/'/!/pop/all/drop
+/'/!/bundle/all
+/'/$/out
+/'/!/outlet
+/!/bundle/all
+/s/FullPacket
+/!/@
+/s/FullPacket
+/!/method/typed/add
+
+/#/ ############################################################
+/#/ Add a Max message to set the prefix/postfix.
+/#/ ############################################################
+
+/#/ Drop the inlet number
+/'/!/drop
+
+/#/ Get _x and assign the new pre/postfix that's on the stack 
+/'/>/_x
+/'/!/swap
+/'/s//xfix
+/'/!/assign
+/'/</_x
+/!/bundle/all
+
+/#/ Assign the bundle above to the address: set
+/s/set
+/!/@
+
+/#/ This first argument is a there for its typetag, since we're
+/#/ using /method/typed/add.
+/s/
+/#/ The name of the message.
+/s/set
+/!/method/typed/add
+
+/$/lib/hook/inlet/finalize/default
+/@/hook/inlet/finalize
+
+/'/!/count/elems
+/'/!/debug
+/'/!/make/bundle
+/'/s/
+/'/!/push
+/'/!/make/bundle
+/'/!/debug
+/'/!/rot
+/'/i/1
+/'/!/debug
+/'/!/eql
+/'/!/if
+/'/!/drop
+/'/!/debug
+/'/@/xfix
+/'/>/_e
+/'/</_x
+/'/!/make/bundle
+/'/</_e
+/!/bundle/all
+/@/hook/init/post

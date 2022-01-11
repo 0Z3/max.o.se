@@ -1,3 +1,16 @@
+/#/ ############################################################
+/#/ o.se.lib.max.ose
+/#/
+/#/ Library of functions that support the family of o.se
+/#/ objects for Max.
+/#/ ############################################################
+
+/#/ ############################################################
+/#/ /lib/inlet/store
+/#/
+/#/ Stores the most recent inlet number at /inlet/num, and
+/#/ value that came in at /inlet/val.
+/#/ ############################################################
 /inlet/num
 /'/>/_x
 /'/!/-rot
@@ -10,70 +23,253 @@
 /!/bundle/all
 /@/lib/inlet/store
 
+/#/ ############################################################
+/#/ /lib/inlet/maken
+/#/
+/#/ Puts a 1 on the stack if the inlet that fired was the
+/#/ leftmost, or a 0 otherwise.
+/#/ ############################################################
 /'/$/inlet/num
+/'/i/1
 /'/$/numinlets
+/'/!/sub
 /'/!/eql
 /!/bundle/all
 /@/lib/inlet/is/left
 
-/in/
-/'/$/numinlets
-/'/!/tostring
-/'/!/push
-/'/!/concat/strings
-/'/@/inlets
-/i/1
-/'/$/numinlets
-/'/!/sub
-/'/@/n
+/#/ ############################################################
+/#/ /lib/inlet/maken
+/#/ 
+/#/ /lib/inlet/maken does three things:
+/#/   1. creates n-1 inlets (inlet 0 is automatically created by Max)
+/#/   2. stores a message for each inlet with /in/<n> as its address
+/#/   3. creates a list of those addresses bound /inlets
+/#/ 
+/#/ ############################################################
 
+/#/ ############################################################
+/#/ BUNDLE BEGIN
+/#/ This is the procedure that /dotimes will execute.
+/#/ ############################################################
+/#/ First, make the inlet.
 /'/!/makeinlet
-/in/
-/'/$/n
+
+/#/ After the setup that will be done below, the stack will
+/#/ contain the starting index of the /dotimes loop (0) on top,
+/#/ followed by a message containing the first inlet address
+/#/ we've created for that index (/in/0).
+
+/#/ Increment the index and duplicate it.
+/'/i/1
+/'/!/add
+/'/!/dup
+
+/#/ Get our list of addresses.
+/'/!/-rot
+
+/#/ Make a new prefix.
+/'/s//in/
+
+/#/ Get our index back and convert it to a string.
+/'/!/swap
 /'/!/tostring
+
+/#/ Push it onto the end of the message containing the
+/#/ prefix we made.
 /'/!/push
+
+/#/ Concatenate the prefix and index string.
 /'/!/concat/strings
-/'/$/inlets
+
+/#/ Make a copy and move it to _x.
+/'/!/dup
+/'/!/string/toaddress/move
+/'/-/_x
+
+/#/ We want our list of addresses to be in reverse order, so
+/#/ we push our address list onto the message that contains
+/#/ the address we just built.
 /'/!/swap
-/'/@/inlets
-/i/1
-/'/$/n
-/'/!/sub
-/'/@/n
-/i/13
-/!/bundle/fromtop
-/'/>/_e
+/'/!/push
+
+/#/ Finally, move our index to the top of the stack.
 /'/!/swap
+/!/bundle/all
+/#/ ############################################################
+/#/ BUNDLE END (/dotimes procedure)
+/#/ ############################################################
+
+/#/ Now, set up the stack to run /dotimes. Since Max creates
+/#/ the leftmost inlet for us, we can make the addresses for it
+/#/ right away.
+
+/#/ This will be our list of addresses.
+/'/s//in/0
+
+/#/ Make a copy, move it to the address, and move that message to _x.
+/'/s//in/0
+/'/!/string/toaddress/move
+/'/-/_x
+
+/#/ Put the starting index on top of the stack.
+/'/i/0
+
+/#/ Now the stack looks like this:
+/#/ #bundle
+/#/ [s:/in/0]
+/#/ [i:0] <-- top
+/#/ where #bundle is the /dotimes procedure we built above.
+
+/#/ Move the /dotimes procedure to the top of the stack.
+/'/!/rot
+
+/#/ Get the number of inlets we are going to create, and subtract
+/#/ 1, since Max already made the first one.
+/'/i/1
 /'/$/numinlets
+/'/!/sub
+
+/#/ Now the stack is:
+/#/ [s:/in/0]
+/#/ [i:0]
+/#/ #bundle
+/#/ [i:<n-1>]
+
+/#/ Run /dotimes.
 /'/!/dotimes
+
+/#/ Drop the index--we don't need it anymore.
+/'/!/drop
+
+/#/ Copy _x onto the stack and move the /inlets message to the top.
+/'/>/_x
+/'/!/swap
+
+/#/ Assign the inlets message to the copy of _x.
+/'/s//inlets
+/'/!/assign
+
+/#/ Move the copy of _x from the stack to _x.
+/'/</_x
+
 /!/bundle/all
 /@/lib/inlet/maken
 
-/i/1
-/'/$/numoutlets
-/'/!/sub
-/'/@/n
+/#/ ############################################################
+/#/ /lib/outlet/maken
+/#/ 
+/#/ /lib/outlet/maken creates n outlets and assigns them to
+/#/ the addresses /out/<0> ... /out/<n-1>. It also keeps a
+/#/ list of the outlets organized in the same order that they
+/#/ appear visually on the Max object.
+/#/ 
+/#/ ############################################################
 
+/#/ ############################################################
+/#/ BEGIN BUNDLE
+/#/ This is the procedure that /dotimes will execute
+/#/ ############################################################
+
+/#/ At the beginning of /dotimes, there will be a message
+/#/ containing the string /outlets in the second position,
+/#/ and the number of outlets to create on top. Swap them.
+/'/!/swap
+
+/#/ Create the outlet and make a copy--we'll store it in
+/#/ both a list and in its own message
 /'/!/makeoutlet
-/out/
-/'/$/n
+/'/!/dup
+
+/#/ Rotate the copy below the other copy and the outlet list.
+/'/!/-rot
+
+/#/ The stack is now:
+/#/ [i:<n>]
+/#/ [b:<outlet>]
+/#/ ... [s:/outlet]
+/#/ [b:<outlet>] <-- top
+
+/#/ The outlet list should correspond spatially to the outlets
+/#/ of the object, and since Max creates them in right-to-left
+/#/ order, we push this onto the front of the outlet list
+/'/!/swap
+/'/!/push
+
+/#/ Now rotate the list to the bottom of the stack and move the
+/#/ index to the top
+/'/!/-rot
+/'/!/swap
+
+/#/ The stack is now:
+/#/ ... [b:<outlet>][s:/outlet]
+/#/ [b:<outlet>]
+/#/ [i:<n>] <-- top
+
+/#/ Decrement the index, since we count from 0.
+/'/i/1
+/'/!/swap
+/'/!/sub
+
+/#/ Make a copy of the index.
+/'/!/dup
+
+/#/ Push the prefix onto the stack.
+/'/s//out/
+
+/#/ Get a copy of our outlet number and convert it to a string.
+/'/!/rot
 /'/!/tostring
+
+/#/ Push the outlet number string onto the end of the message
+/#/ that has the prefix we created, and concatentate them.
 /'/!/push
 /'/!/concat/strings
-/'/!/assignstacktoenv
-/i/1
-/'/$/n
-/'/!/sub
-/'/@/n
-/i/11
-/!/bundle/fromtop
-/'/>/_e
+
+/#/ Rotate the outlet to the top, and then swap it below the address.
+/'/!/rot
+/'/!/swap
+
+/#/ Get a copy of _x and move it below the outlet and address.
+/'/>/_x
+/'/!/-rot
+
+/#/ Assign the outlet to the address in the copy of _x, and move
+/#/ the copy of _x that's on the stack back to _x.
+/'/!/assign
+/'/</_x
+/!/bundle/all
+/#/ ############################################################
+/#/ END BUNDLE (/dotimes procedure)
+/#/ ############################################################
+
+/#/ Now set up the stack. The /dotimes procedure is the only thing
+/#/ on it. Get the number of outlets to create and make a copy--
+/#/ this will serve as both the number of iterations /dotimes
+/#/ should do, and the index of the first address, which will
+/#/ be decremented at the start of the first iteration of /dotimes.
+/'/s//outlets
 /'/!/swap
 /'/$/numoutlets
+/'/!/dup
+/'/!/-rot
+
+/#/ Run /dotimes and drop the final index from the stack.
 /'/!/dotimes
+/'/!/drop
+
+/#/ Move the /outlets string from the end of the message
+/#/ to the address, and move the message to _x.
+/'/!/string/toaddress/move
+/'/-/_x
+
 /!/bundle/all
 /@/lib/outlet/maken
 
+/#/ ############################################################
+/#/ /lib/inlet/0/exec
+/#/ 
+/#/ This simply executes whatever has come in the leftmost inlet
+/#/ ############################################################
 /'/>/_e
 /'/$/in/0
 /'/!/blob/toelem
@@ -81,13 +277,41 @@
 /!/bundle/all
 /@/lib/inlet/0/exec
 
+/#/ ############################################################
+/#/ /lib/union
+/#/
+/#/ Performs a union of addresses on two bundles.
+/#/ The stack should contain two bundles. The topmost is the
+/#/ one whose addresses will take precedence over the one below.
+/#/ ############################################################
+
+/#/ Get the addresses of the topmost bundle.
 /'/!/addresses
-/'/!/nip
+
+/#/ Move the bundle with lower precedence below the address list.
+/'/!/rot
+/'/!/swap
+
+/#/ Gather the messages that match the address list of the
+/#/ higher precedence bundle.
 /'/!/gather
+
+/#/ Throw away the messages that matched--these are the ones
+/#/ that have addresses that are already contained in the
+/#/ higher precedence bundle.
 /'/!/nip
+
+/#/ Join the two bundles.
+/'/!/join
+
 /!/bundle/all
 /@/lib/union
 
+/#/ ############################################################
+/#/ /lib/hook/inlet/finalize/default
+/#/
+/#/ By default, clear the stack after an inlet has fired.
+/#/ ############################################################
 /'/!/clear
 /!/bundle/all
 /@/lib/hook/inlet/finalize/default

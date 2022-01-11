@@ -7,15 +7,6 @@
 /i/0
 /@/numoutlets
 
-/'/!/lib/inlet/maken
-/'/</_e
-/'/!/lib/outlet/maken
-/'/</_x
-/'/!/make/bundle
-/'/</_e
-/!/bundle/all
-/@/hook/init/post
-
 /'/!/lib/inlet/store
 /'/>/_x
 /'/$/inlet/val
@@ -68,3 +59,14 @@
 
 /$/lib/hook/inlet/finalize/default
 /@/hook/inlet/finalize
+
+/'/!/lib/inlet/maken
+/'/!/lib/outlet/maken
+/'/>/_e
+/'/<</_x
+/#/ /'/</_e
+/#/ /'/!/lib/outlet/maken
+/'/!/make/bundle
+/'/</_e
+/!/bundle/all
+/@/hook/init/post

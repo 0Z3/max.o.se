@@ -442,7 +442,6 @@ void ose_maxobj_processArgs(ose_bundle osevm,
     }
     ose_bundleAll(vm_s);
     ose_appendBundle(vm_s, vm_i);
-    ose_clear(vm_s);
     osevm_run(osevm);
     ose_maxobj_runHook(osevm, OSE_MAXOBJ_HOOK_INIT_POST,
                        strlen(OSE_MAXOBJ_HOOK_INIT_POST));

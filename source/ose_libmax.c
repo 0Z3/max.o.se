@@ -186,7 +186,7 @@ void ose_libmax_addTypedMethod(ose_bundle osevm)
         int32_t i = 0;
         for(i = 0; i < n; i++)
         {
-            if(ose_peekType != OSETT_MESSAGE)
+            if(ose_peekType(vm_s) != OSETT_MESSAGE)
             {
                 object_error((t_object *)x,
                              "/method/typed/add: expected to find "

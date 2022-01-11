@@ -9,6 +9,21 @@
 /!/makeoutlet
 /@/out
 
+/#/ Initialize the /inlet/right with an empty bundle.
+/!/make/bundle
+/@/inlet/right
+
+/#/ ############################################################
+/#/ FullPacket
+/#/
+/#/ If the bundle came in on the right inlet, store it.
+/#/ If it comes in the left inlet, do a union and output it.
+/#/ ############################################################
+
+/#/ This is the ELSE clause of the /if statement that will
+/#/ be executed if the bundle came in through the right inlet.
+
+/#/ Assign the bundle to /inlet/right in _x
 /'/>/_x
 /'/!/swap
 /inlet/right
@@ -16,26 +31,35 @@
 /'/</_x
 /i/5
 /!/bundle/fromtop
-/'/!/addresses
+
+/#/ This is the THEN clause of the /if statement that will
+/#/ be executed if the bundle came in through the left inlet.
+
+/#/ Get the most recent bundle from the right inlet.
 /'/$/inlet/right
 /'/!/blob/toelem
+
+/#/ Swap the bundle from the right inlet (low precedence)
+/#/ with the new one from the left inlet (high precedence).
 /'/!/swap
-/'/!/gather
-/'/!/nip
-/'/!/swap
-/'/!/unpack/drop
-/'/!/roll/bottom
-/'/!/unpack/drop
-/'/!/bundle/all
+
+/#/ Perform a union and output the result
+/'/!/lib/union
 /'/$/out
 /'/!/outlet
-/i/13
+/i/6
 /!/bundle/fromtop
+
+/#/ Get the inlet number and perform /if. Inlets are numbered
+/#/ starting from 0 on the RIGHT!
 /'/!/rot
 /i/1
 /'/!/eql
 /'/!/if
+
+/#/ /if calls /exec which leaves the env on the stack. Drop it.
 /'/!/drop
+
 /!/bundle/all
 /s/FullPacket
 /!/@
@@ -44,9 +68,6 @@
 
 /$/lib/hook/inlet/finalize/default
 /@/hook/inlet/finalize
-
-/!/make/bundle
-/@/inlet/right
 
 /'/>/_e
 /'/</_x
