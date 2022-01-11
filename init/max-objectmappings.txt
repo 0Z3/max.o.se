@@ -2,6 +2,7 @@ max objectfile o.se.serve o.se;
 
 max objectfile o.se.o.append o.se;
 max objectfile o.se.o.collect o.se;
+max objectfile o.se.o.gather o.se;
 max objectfile o.se.o.pack o.se;
 max objectfile o.se.o.prepend o.se;
 max objectfile o.se.o.route o.se;

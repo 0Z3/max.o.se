@@ -85,19 +85,15 @@
 /@/hook/inlet/finalize
 
 /'/!/count/elems
-/'/!/debug
 /'/!/make/bundle
 /'/s/
 /'/!/push
 /'/!/make/bundle
-/'/!/debug
 /'/!/rot
 /'/i/1
-/'/!/debug
 /'/!/eql
 /'/!/if
 /'/!/drop
-/'/!/debug
 /'/@/xfix
 /'/>/_e
 /'/</_x
