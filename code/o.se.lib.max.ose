@@ -308,6 +308,65 @@
 /@/lib/union
 
 /#/ ############################################################
+/#/ /lib/intersection
+/#/
+/#/ Performs an intersection of addresses on two bundles.
+/#/ The stack should contain two bundles. The topmost is the
+/#/ one whose addresses will take precedence over the one below.
+/#/ ############################################################
+
+/#/ Get the addresses of the topmost bundle
+/'/!/addresses
+
+/#/ Move the bundle with lower precedence below the address list.
+/'/!/rot
+/'/!/swap
+
+/#/ Gather the messages that match the address list of the
+/#/ higher precedence bundle, and drop the ones that didn't match.
+/'/!/gather
+/'/!/drop
+
+/#/ Get the addresses that did match.
+/'/!/addresses
+
+/#/ Move the higher precedence bundle below the address list.
+/'/!/rot
+/'/!/swap
+
+/#/ Gather the messages with addresses that intersect, and drop
+/#/ those that didn't.
+/'/!/gather
+/'/!/drop
+
+/#/ Drop the lower precedence bundle
+/'/!/nip
+
+/!/bundle/all
+/@/lib/intersection
+
+
+/'/!/addresses
+/'/!/rot
+/'/!/swap
+/'/!/push
+/'/!/addresses
+/'/!/pop
+/'/!/drop
+/'/!/rot
+/'/!/swap
+/'/!/gather
+/'/!/nip
+/'/!/swap
+/'/!/pop
+/'/!/gather
+/'/!/nip
+/'/!/join
+/!/bundle/all
+/@/lib/difference
+
+
+/#/ ############################################################
 /#/ /lib/hook/inlet/finalize/default
 /#/
 /#/ By default, clear the stack after an inlet has fired.
