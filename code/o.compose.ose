@@ -36,6 +36,32 @@
 /s/mousedown
 /!/@
 
+/#/ else
+/#/ (ignore
+/!/make/bundle
+
+/#/ then
+/'/!/oscbn/print
+/'/!/settext
+/'/!/refresh
+/'/!/drop
+/i/4
+/!/bundle/fromtop
+
+/#/ test
+
+/#/ inlet number
+/'/!/rot
+/'/i/0
+/'/!/eql
+/'/!/if
+/'/!/drop
+/!/bundle/all
+/s/FullPacket
+/!/@
+/s/FullPacket
+/!/method/typed/add
+
 /'/!/drop
 /!/bundle/all
 /@/hook/gui/finalize
