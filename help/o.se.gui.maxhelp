@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 526.0, 134.0, 983.0, 594.0 ],
+		"rect" : [ 422.0, 126.0, 1244.0, 799.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -41,17 +41,98 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"fontface" : 0,
+					"id" : "obj-7",
+					"maxclass" : "o.compose",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 727.0, 398.0, 150.0, 23.0 ],
+					"saved_bundle_data" : [ 35, 98, 117, 110, 100, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 47, 102, 111, 111, 0, 0, 0, 0, 44, 105, 0, 0, 0, 0, 0, 10 ],
+					"saved_bundle_length" : 36,
+					"text" : "/foo : 10"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
-					"id" : "obj-14",
-					"linecount" : 7,
+					"id" : "obj-6",
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.compose.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 600.0, 472.0, 146.0, 24.0 ],
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
 					"maxclass" : "o.se.gui",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"o.se_initfile" : "o.display.ose",
 					"outlettype" : [ "FullPacket" ],
-					"patching_rect" : [ 127.0, 362.0, 266.0, 104.0 ],
-					"text" : "{\n\r /foo : [ 1, 2, 3 ],\n\r /bar : [ 4, 5, 6 ]\n\r}",
+					"patching_rect" : [ 435.0, 216.0, 266.0, 24.0 ],
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-4",
+					"linecount" : 4,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.compose.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 435.0, 49.0, 146.0, 64.0 ],
+					"text" : "{\n/foo : [1, 2, 3],\n/bar : [4, 5, 6]\n}",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-2",
+					"linecount" : 3,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.expr.codebox.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 435.0, 147.0, 300.0, 51.0 ],
+					"text" : "{\n/@/bloo : [\"/$/foo\", \"/$/bar\", \"/!/push\"]\n}",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-14",
+					"maxclass" : "o.se.gui",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.display.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 127.0, 378.0, 266.0, 24.0 ],
 					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 				}
 
@@ -62,14 +143,12 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-13",
-					"linecount" : 7,
 					"maxclass" : "o.se.gui",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"o.se_initfile" : "o.display.ose",
 					"outlettype" : [ "FullPacket" ],
-					"patching_rect" : [ 127.0, 241.0, 266.0, 104.0 ],
-					"text" : "{\n\r /foo : [ 1, 2, 3 ],\n\r /bar : [ 4, 5, 6 ]\n\r}",
+					"patching_rect" : [ 127.0, 241.0, 266.0, 24.0 ],
 					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 				}
 
@@ -121,14 +200,39 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-7", 0 ]
 				}
 
 			}
  ],
 		"dependency_cache" : [ 			{
 				"name" : "o.se.gui.mxo",
+				"type" : "iLaX"
+			}
+, 			{
+				"name" : "o.compose.mxo",
 				"type" : "iLaX"
 			}
  ],

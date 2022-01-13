@@ -1,0 +1,103 @@
+/s/o.se.lib.max.ose
+/!/load
+/!/clear
+
+/s/ose_oscbn.so
+/!/load
+/<</_e
+
+/i/0
+/@/numinlets
+/!/makeinlet
+
+/!/makeoutlet
+/@/out
+
+/#/ the previous bundle will be just below the new text
+/#/ on the stack. rather than just nip'ing it, this will
+/#/ ensure that if there's anything else, we get rid of
+/#/ it as well
+/'/!/bundle/all
+/'/!/pop
+/'/!/nip
+/'/!/oscbn/parse
+/'/>/_x
+/'/!/swap
+/'/s//expr
+/'/!/assign
+/'/</_x
+/!/bundle/all
+/s/enter
+/!/@
+
+/'/!/drop
+/'/$/expr
+/'/!/blob/toelem
+/'/!/exec2
+/'/$/out
+/'/!/outlet
+/!/bundle/all
+/s/FullPacket
+/!/@
+/s/FullPacket
+/!/method/typed/add
+
+/#/ drop modifiers
+/'/!/drop
+/#/ drop x and y pos
+/'/!/2drop
+/'/!/make/bundle
+/'/$/expr
+/'/!/blob/toelem
+/'/!/exec2
+/'/$/out
+/'/!/outlet
+/!/bundle/all
+/s/mousedown
+/!/@
+
+/'/!/drop
+/!/bundle/all
+/@/hook/gui/finalize
+
+/#/ store our env in the _x bundle
+/'/>/_e
+/'/</_x
+/'/!/make/bundle
+/'/</_e
+
+/#/ get whatever text is in the box at instantiation time.
+/#/ if it's an empty string, push an empty bundle onto the stack.
+/#/ otherwise parse the text
+
+/'/!/gettext
+/'/!/dup
+
+/#/ else
+/!/make/bundle
+/'/!/oscbn/parse
+/!/push
+
+/#/ then
+/!/make/bundle
+/'/!/drop
+/!/push
+/'/!/make/bundle
+/!/push
+
+/#/ get a copy of the text and compare it to the empty string
+/'/!/rot
+/'/s/
+/'/!/eql
+/'/!/if
+/#/ /if uses /!/exec, which leaves a copy of the env on the stack
+/'/!/drop
+
+/#/ assign the expr to _x
+/'/>/_x
+/'/!/swap
+/'/s//expr
+/'/!/assign
+/'/</_x
+/!/bundle/all
+/@/hook/init/post
