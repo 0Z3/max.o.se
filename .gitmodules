@@ -1,0 +1,9 @@
+[submodule "source/libose"]
+	path = source/libose
+	url = https://github.com/0Z3/libose
+[submodule "source/o.se.oscbn"]
+	path = source/o.se.oscbn
+	url = https://github.com/0Z3/o.se.oscbn
+[submodule "source/max-sdk-base"]
+    path = source/max-sdk-base
+    url = https://github.com/cycling74/max-sdk-base
