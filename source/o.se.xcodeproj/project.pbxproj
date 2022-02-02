@@ -27,8 +27,6 @@
 		52D13BA8279CC527001299E5 /* ose_builtins.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9B279CC526001299E5 /* ose_builtins.c */; };
 		52D13BA9279CC527001299E5 /* ose_vm.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9C279CC526001299E5 /* ose_vm.c */; };
 		52D13BAA279CC527001299E5 /* ose_vm.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9C279CC526001299E5 /* ose_vm.c */; };
-		52D13BAB279CC527001299E5 /* ose_assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9D279CC526001299E5 /* ose_assert.c */; };
-		52D13BAC279CC527001299E5 /* ose_assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9D279CC526001299E5 /* ose_assert.c */; };
 		52D13BAD279CC527001299E5 /* ose_match.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9E279CC526001299E5 /* ose_match.c */; };
 		52D13BAE279CC527001299E5 /* ose_match.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9E279CC526001299E5 /* ose_match.c */; };
 		52D13BAF279CC527001299E5 /* ose_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B9F279CC526001299E5 /* ose_util.c */; };
@@ -58,7 +56,6 @@
 		52D13B9A279CC524001299E5 /* ose_stackops.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_stackops.c; path = libose/ose_stackops.c; sourceTree = "<group>"; };
 		52D13B9B279CC526001299E5 /* ose_builtins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_builtins.c; path = libose/ose_builtins.c; sourceTree = "<group>"; };
 		52D13B9C279CC526001299E5 /* ose_vm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_vm.c; path = libose/ose_vm.c; sourceTree = "<group>"; };
-		52D13B9D279CC526001299E5 /* ose_assert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_assert.c; path = libose/ose_assert.c; sourceTree = "<group>"; };
 		52D13B9E279CC526001299E5 /* ose_match.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_match.c; path = libose/ose_match.c; sourceTree = "<group>"; };
 		52D13B9F279CC526001299E5 /* ose_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_util.c; path = libose/ose_util.c; sourceTree = "<group>"; };
 		52D13BA0279CC527001299E5 /* ose_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_context.c; path = libose/ose_context.c; sourceTree = "<group>"; };
@@ -96,7 +93,6 @@
 				52D13B82278A33B7001299E5 /* ose_maxgui.c */,
 				52D13B632789FD99001299E5 /* ose_libmax.c */,
 				52D13B8D278C5591001299E5 /* ose_libmaxgui.c */,
-				52D13B9D279CC526001299E5 /* ose_assert.c */,
 				52D13B9B279CC526001299E5 /* ose_builtins.c */,
 				52D13BA0279CC527001299E5 /* ose_context.c */,
 				52D13B9E279CC526001299E5 /* ose_match.c */,
@@ -255,7 +251,6 @@
 			files = (
 				52C5967425CDCCE800F9E21F /* o.se.c in Sources */,
 				52D13BB8279CC6B8001299E5 /* ose_load.c in Sources */,
-				52D13BAB279CC527001299E5 /* ose_assert.c in Sources */,
 				52D13B85278A461C001299E5 /* commonsyms.c in Sources */,
 				52D13BAF279CC527001299E5 /* ose_util.c in Sources */,
 				52D13BAD279CC527001299E5 /* ose_match.c in Sources */,
@@ -286,7 +281,6 @@
 				52D13B83278A33B7001299E5 /* ose_maxgui.c in Sources */,
 				52D13BB4279CC527001299E5 /* ose_print.c in Sources */,
 				52D13BAE279CC527001299E5 /* ose_match.c in Sources */,
-				52D13BAC279CC527001299E5 /* ose_assert.c in Sources */,
 				52D13BA6279CC527001299E5 /* ose_stackops.c in Sources */,
 				52D13B86278A461C001299E5 /* commonsyms.c in Sources */,
 				52D13BB0279CC527001299E5 /* ose_util.c in Sources */,
