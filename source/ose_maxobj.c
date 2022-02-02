@@ -93,7 +93,7 @@ void ose_maxobj_outletBundle(void *outlet,
                              ose_bundle bundle)
 {
     t_atom out[2];
-    atom_setlong(out, ose_readInt32(bundle, -4));
+    atom_setlong(out, ose_readSize(bundle));
     atom_setlong(out + 1, (long)ose_getBundlePtr(bundle));
     outlet_anything(outlet, msg, 2, out);
 }

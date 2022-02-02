@@ -42,8 +42,7 @@ static void ose_libmax_load(ose_bundle osevm)
                                    + OSEVM_CACHE_OFFSET_8));
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_bundle vm_i = OSEVM_INPUT(osevm);
-    if(ose_isStringType(ose_peekMessageArgType(vm_s))
-       == OSETT_TRUE)
+    if(ose_isStringType(ose_peekMessageArgType(vm_s)))
     {
         const char * const str = ose_peekString(vm_s);
         char filename[MAX_PATH_CHARS];
@@ -154,8 +153,7 @@ static void ose_libmax_addTypedMethod(ose_bundle osevm)
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = x->vm_s;
     if(ose_peekType(vm_s) == OSETT_MESSAGE
-       && (ose_isStringType(ose_peekMessageArgType(vm_s))
-           == OSETT_TRUE))
+       && (ose_isStringType(ose_peekMessageArgType(vm_s))))
     {
         t_symbol *name = gensym(ose_peekString(vm_s));
         ose_drop(vm_s);
@@ -216,8 +214,7 @@ static void ose_libmax_addUntypedMethod(ose_bundle osevm)
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = x->vm_s;
     if(ose_peekType(vm_s) == OSETT_MESSAGE
-       && (ose_isStringType(ose_peekMessageArgType(vm_s))
-           == OSETT_TRUE))
+       && (ose_isStringType(ose_peekMessageArgType(vm_s))))
     {
         const char * const name = ose_peekString(vm_s);
         if(!ose_maxobj_addMaxMethod(x, gensym(name)))
@@ -239,7 +236,7 @@ static void ose_libmax_post(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = OSEVM_STACK(osevm);
-    if(ose_bundleHasAtLeastNElems(vm_s, 1) == OSETT_TRUE
+    if(ose_bundleHasAtLeastNElems(vm_s, 1)
        && ose_peekType(vm_s) == OSETT_MESSAGE
        && ose_peekMessageArgType(vm_s) == OSETT_STRING)
     {

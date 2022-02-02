@@ -46,7 +46,7 @@ void ose_libmaxgui_settext(ose_bundle osevm)
 {
     ose_maxgui *x = (ose_maxgui *)ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = OSEVM_STACK(osevm);
-    if(ose_bundleHasAtLeastNElems(vm_s, 1) == OSETT_TRUE
+    if(ose_bundleHasAtLeastNElems(vm_s, 1)
        && ose_peekType(vm_s) == OSETT_MESSAGE
        && ose_peekMessageArgType(vm_s) == OSETT_STRING)
     {
