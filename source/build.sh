@@ -1,6 +1,8 @@
 #!/bin/bash
 
-modules="o.se.oscbn"
+set -x
+
+modules=("o.se.oscbn" "o.se.db")
 
 module_install_dir="../misc"
 
@@ -18,6 +20,7 @@ while getopts "d" options; do
     case "${options}" in
         d)
             config="Debug"
+            target="debug"
             ;;
         h)
             usage
@@ -33,6 +36,7 @@ if [ ! -d ../misc ]; then
     mkdir "$module_install_dir"
 fi
 
-for m in "$modules"; do
+for m in "${modules[@]}"; do
+    (cd "$m" && make $target)
     cp "$m/$m.so" "$module_install_dir"
 done

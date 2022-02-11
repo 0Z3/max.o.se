@@ -413,7 +413,9 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/max-sdk-base/c74support/max-includes\"";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/max-sdk-base/c74support/max-includes/macho-prefix.pch";
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = YES;
@@ -455,9 +457,9 @@
 					"$(PROJECT_DIR)/max-sdk-base/c74support/max-includes",
 					"$(PROJECT_DIR)/max-sdk-base/c74support/msp-includes",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = "$(inherited)";
 				GCC_WARN_PEDANTIC = NO;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -508,9 +510,9 @@
 					"$(PROJECT_DIR)/max-sdk-base/c74support/max-includes",
 					"$(PROJECT_DIR)/max-sdk-base/c74support/msp-includes",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = "$(inherited)";
 				GCC_WARN_PEDANTIC = NO;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -533,8 +535,6 @@
 					"-DOSE_CONF_ADDRESS_ANONVAL='\"/\\\\0\\\\0\\\\0\"'",
 					"-DOSE_CONF_ADDRESS_ANONVAL_LEN=1",
 					"-DOSE_CONF_ADDRESS_ANONVAL_SIZE=4",
-					"-glldb",
-					"-DOSE_CONF_DEBUG",
 					"-DO_SE_VMSIZE=524288",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
@@ -561,9 +561,9 @@
 					"$(PROJECT_DIR)/max-sdk-base/c74support/max-includes",
 					"$(PROJECT_DIR)/max-sdk-base/c74support/msp-includes",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = "$(inherited)";
 				GCC_WARN_PEDANTIC = NO;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -614,9 +614,9 @@
 					"$(PROJECT_DIR)/max-sdk-base/c74support/max-includes",
 					"$(PROJECT_DIR)/max-sdk-base/c74support/msp-includes",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = "$(inherited)";
 				GCC_WARN_PEDANTIC = NO;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";

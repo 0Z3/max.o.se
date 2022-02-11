@@ -7,3 +7,6 @@
 [submodule "source/max-sdk-base"]
     path = source/max-sdk-base
     url = https://github.com/cycling74/max-sdk-base
+[submodule "source/o.se.db"]
+	path = source/o.se.db
+	url = https://github.com/0Z3/o.se.db
