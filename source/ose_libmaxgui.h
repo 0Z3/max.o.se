@@ -40,7 +40,7 @@ void ose_libmaxgui_gettext(ose_bundle osevm);
 void ose_libmaxgui_settext(ose_bundle osevm);
 void ose_libmaxgui_refresh(ose_bundle osevm);
 
-void ose_libmaxgui_addFunctionsToEnv(ose_bundle osevm);
+void ose_libmaxgui_addMaxGUIFunctionsToEnv(ose_bundle osevm);
 void ose_libmaxgui_addObjInfoToEnv(ose_maxobj *x,
                                    ose_bundle osevm,
                                    t_symbol *sym,

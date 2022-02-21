@@ -45,10 +45,16 @@ typedef struct _ose_maxgui
 {
     ose_maxobj ob;
     t_symbol *filename;
+    ose_bundle osevm_gui;
 } ose_maxgui;
 
 #define OSE_MAXGUI_GET_OSEVM(x) (((ose_maxobj *)x)->osevm)
 
+void ose_maxgui_method(ose_maxobj *x,
+                       t_symbol *msg,
+                       long ac,
+                       t_atom *av);
+int ose_maxgui_addMaxMethod(ose_maxobj *x, t_symbol *name);
 void ose_maxgui_processArgs(ose_bundle osevm,
                             t_symbol *sym,
                             long argc,
@@ -56,12 +62,24 @@ void ose_maxgui_processArgs(ose_bundle osevm,
 /* class and subclass */
 void ose_maxgui_loadSubclass(ose_maxgui *x, t_symbol *sym);
 /* default handlers for max messages */
-void ose_maxgui_init(ose_maxgui *x,
-                     t_symbol *sym,
-                     long argc,
-                     t_atom *argv,
-                     int32_t vmsize);
+int ose_maxgui_init(ose_maxgui *x,
+                    t_symbol *sym,
+                    long argc,
+                    t_atom *argv);
 void ose_maxgui_free(ose_maxgui *x);
+void ose_maxgui_FullPacket(ose_maxobj *x, long len, long ptr);
+void ose_maxgui_anything(ose_maxobj *x,
+                         t_symbol *s,
+                         long ac,
+                         t_atom *av);
+void ose_maxgui_list(ose_maxobj *x,
+                     t_symbol *s,
+                     long ac,
+                     t_atom *av);
+void ose_maxgui_float(ose_maxobj *x, double f);
+void ose_maxgui_int(ose_maxobj *x, long l);
+void ose_maxgui_bang(ose_maxobj *x);
+void ose_maxgui_paint(ose_maxgui *x, t_object *patcherview);
 void ose_maxgui_gettext(ose_maxgui *x);
 void ose_maxgui_enter(ose_maxgui *x);
 void ose_maxgui_mousedown(ose_maxgui *x,

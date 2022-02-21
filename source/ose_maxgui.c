@@ -38,6 +38,56 @@
 
 /* max methods */
 
+void ose_maxgui_method(ose_maxobj *x,
+                       t_symbol *msg,
+                       long ac,
+                       t_atom *av)
+{
+    ose_maxobj_method_impl(x, x->osevm, msg, ac, av);
+}
+
+int ose_maxgui_addMaxMethod(ose_maxobj *x, t_symbol *name)
+{
+    extern t_symbol *ps_FullPacket;
+    if(name == gensym("bang"))
+    {
+        object_addmethod((t_object *)x, (method)ose_maxgui_bang,
+                         "bang", 0);
+    }
+    else if(name == gensym("int"))
+    {
+        object_addmethod((t_object *)x, (method)ose_maxgui_int,
+                         "int", A_LONG, 0);
+    }
+    else if(name == gensym("float"))
+    {
+        object_addmethod((t_object *)x, (method)ose_maxgui_float,
+                         "float", A_FLOAT, 0);
+    }
+    else if(name == gensym("list"))
+    {
+        object_addmethod((t_object *)x, (method)ose_maxgui_list,
+                         "list", A_GIMME, 0);
+    }
+    /* the anything method seems to need to be bound in the class */
+    /* else if(name == gensym("anything")) */
+    /* { */
+    /*     object_addmethod((t_object *)x, (method)ose_maxgui_anything, */
+    /*                      "anything", A_GIMME, 0); */
+    /* } */
+    else if(name == ps_FullPacket)
+    {
+        object_addmethod((t_object *)x,
+                         (method)ose_maxgui_FullPacket,
+                         "FullPacket", A_LONG, A_LONG, 0);
+    }
+    else
+    {
+        return 1;
+    }
+    return 0;
+}
+
 void ose_maxgui_processArgs(ose_bundle osevm,
                             t_symbol *sym,
                             long argc,
@@ -74,7 +124,7 @@ void ose_maxgui_methodFinalize(ose_maxgui *x,
     ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_maxobj_callMethod(osevm, name, namelen);
-    ose_maxobj_run((ose_maxobj *)x);
+    ose_maxobj_run((ose_maxobj *)x, osevm);
     ose_pushString(vm_s, "/hook/gui/finalize");
     OSEVM_LOOKUP(osevm);
     if(ose_peekType(vm_s) == OSETT_MESSAGE
@@ -83,7 +133,7 @@ void ose_maxgui_methodFinalize(ose_maxgui *x,
         ose_bundle vm_i = OSEVM_INPUT(osevm);
         ose_blobToElem(vm_s);
         ose_replaceBundle(vm_s, vm_i);
-        ose_maxobj_run(x);
+        ose_maxobj_run(x, osevm);
     }
     else
     {
@@ -93,13 +143,56 @@ void ose_maxgui_methodFinalize(ose_maxgui *x,
 
 /* default handlers for max messages */
 
-void ose_maxgui_init(ose_maxgui *x,
+void ose_maxgui_FullPacket(ose_maxobj *x, long len, long ptr)
+{
+    ose_maxobj_FullPacket_impl(x, x->osevm, len, ptr);
+}
+
+void ose_maxgui_anything(ose_maxobj *x,
+                         t_symbol *s,
+                         long ac,
+                         t_atom *av)
+{
+    ose_maxobj_anything_impl(x, x->osevm, s, ac, av);
+}
+
+void ose_maxgui_list(ose_maxobj *x,
+                     t_symbol *s,
+                     long ac,
+                     t_atom *av)
+{
+    ose_maxobj_list_impl(x, x->osevm, s, ac, av);
+}
+
+void ose_maxgui_float(ose_maxobj *x, double f)
+{
+    ose_maxobj_float_impl(x, x->osevm, f);
+}
+
+void ose_maxgui_int(ose_maxobj *x, long l)
+{
+    ose_maxobj_int_impl(x, x->osevm, l);
+}
+
+void ose_maxgui_bang(ose_maxobj *x)
+{
+    ose_maxobj_bang_impl(x, x->osevm);
+}
+
+void ose_maxgui_paint(ose_maxgui *x, t_object *patcherview)
+{
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_pushAlignedPtr(vm_s, patcherview);
+    ose_maxgui_methodFinalize(x, "paint", strlen("paint"));
+}
+
+int ose_maxgui_init(ose_maxgui *x,
                      t_symbol *sym,
                      long argc,
-                     t_atom *argv,
-                     int32_t vmsize)
+                     t_atom *argv)
 {
-    ose_maxobj_init(x, sym, argc, argv, vmsize);
+    return ose_maxobj_init(x, sym, argc, argv);
 }
 
 void ose_maxgui_free(ose_maxgui *x)

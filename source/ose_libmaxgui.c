@@ -35,14 +35,15 @@
 
 #include "ose_maxobj.h"
 #include "ose_maxgui.h"
+#include "ose_libmax.h"
 
-void ose_libmaxgui_gettext(ose_bundle osevm)
+static void ose_libmaxgui_gettext(ose_bundle osevm)
 {
     ose_maxgui *x = (ose_maxgui *)ose_maxobj_getMaxObjPtr(osevm);
     ose_maxgui_gettext(x);
 }
 
-void ose_libmaxgui_settext(ose_bundle osevm)
+static void ose_libmaxgui_settext(ose_bundle osevm)
 {
     ose_maxgui *x = (ose_maxgui *)ose_maxobj_getMaxObjPtr(osevm);
     ose_bundle vm_s = OSEVM_STACK(osevm);
@@ -56,14 +57,223 @@ void ose_libmaxgui_settext(ose_bundle osevm)
     }
 }
 
-void ose_libmaxgui_refresh(ose_bundle osevm)
+static void ose_libmaxgui_refresh(ose_bundle osevm)
 {
     ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
     jbox_redraw((t_jbox *)x);
 }
 
+static void *getPtr(ose_bundle vm_s)
+{
+    if(ose_bundleHasAtLeastNElems(vm_s, 1)
+       && ose_peekType(vm_s) == OSETT_MESSAGE
+       && ose_peekMessageArgType(vm_s) == OSETT_BLOB)
+    {
+        int32_t o = ose_getLastBundleElemOffset(vm_s);
+        int32_t to, ntt, lto, po, lpo;
+        void *ptr = NULL;
+        ose_getNthPayloadItem(vm_s, 1, o, &to, &ntt, &lto, &po, &lpo);
+        ose_alignPtr(vm_s, lpo + 4);
+        ptr = ose_readAlignedPtr(vm_s, lpo + 4);
+        return ptr;
+    }
+    else
+    {
+    	return NULL;
+    }
+}
+
+static void ose_libmaxgui_patcherviewGetJGraphics(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    void *ptr = getPtr(vm_s);
+    if(ptr)
+    {
+        ose_drop(vm_s);
+        t_jgraphics *g = patcherview_get_jgraphics(ptr);
+        if(g)
+        {
+            ose_pushAlignedPtr(vm_s, g);
+        }
+    }
+    /* if(ose_bundleHasAtLeastNElems(vm_s, 1) */
+    /*    && ose_peekType(vm_s) == OSETT_MESSAGE */
+    /*    && ose_peekMessageArgType(vm_s) == OSETT_BLOB) */
+    /* { */
+    /*     int32_t o = ose_getLastBundleElemOffset(vm_s); */
+    /*     int32_t to, ntt, lto, po, lpo; */
+    /*     void *pv = NULL; */
+    /*     ose_getNthPayloadItem(vm_s, 1, o, &to, &ntt, &lto, &po, &lpo); */
+    /*     ose_alignPtr(vm_s, lpo + 4); */
+    /*     pv = ose_readAlignedPtr(vm_s, lpo + 4); */
+    /*     ose_drop(vm_s); */
+    /*     if(pv) */
+    /*     { */
+    /*         t_jgraphics *g = patcherview_get_jgraphics(pv); */
+    /*         if(g) */
+    /*         { */
+    /*             ose_pushAlignedPtr(vm_s, g); */
+    /*         } */
+    /*     } */
+    /* } */
+    /* else */
+    /* { */
+
+    /* } */
+}
+
+static void ose_libmaxgui_jboxGetWidthForView(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 1))
+    {
+        t_object *pv = getPtr(vm_s);
+        if(pv)
+        {
+            t_rect r;
+            jbox_get_rect_for_view(x, pv, &r);
+            ose_pushInt32(vm_s, r.width);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jboxGetHeightForView(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 1))
+    {
+        t_object *pv = getPtr(vm_s);
+        if(pv)
+        {
+            t_rect r;
+            jbox_get_rect_for_view(x, pv, &r);
+            ose_pushInt32(vm_s, r.height);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsSetSourceJRGBA(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 5))
+    {
+        float a = ose_popFloat(vm_s);
+        float b = ose_popFloat(vm_s);
+        float g = ose_popFloat(vm_s);
+        float r = ose_popFloat(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            t_jrgba c = (t_jrgba){r, g, b, a};
+            jgraphics_set_source_jrgba(gc, &c);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsFill(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 1)
+       && ose_peekType(vm_s) == OSETT_MESSAGE
+       && ose_peekMessageArgType(vm_s) == OSETT_BLOB)
+    {
+        int32_t o = ose_getLastBundleElemOffset(vm_s);
+        int32_t to, ntt, lto, po, lpo;
+        void *gc = NULL;
+        ose_getNthPayloadItem(vm_s, 1, o, &to, &ntt, &lto, &po, &lpo);
+        ose_alignPtr(vm_s, lpo + 4);
+        gc = ose_readAlignedPtr(vm_s, lpo + 4);
+        if(gc)
+        {
+            /* jgraphics_move_to(gc, 0, 0); */
+            /* jgraphics_line_to(gc, 100, 0); */
+            /* jgraphics_line_to(gc, 100, 100); */
+            /* jgraphics_line_to(gc, 0, 100); */
+            /* jgraphics_line_to(gc, 0, 0); */
+            jgraphics_fill(gc);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsMoveTo(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 3))
+    {
+        int32_t y = ose_popInt32(vm_s);
+        int32_t x = ose_popInt32(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_move_to(gc, x, y);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsLineTo(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 3))
+    {
+        int32_t y = ose_popInt32(vm_s);
+        int32_t x = ose_popInt32(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_line_to(gc, x, y);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_addTypedMethod(ose_bundle osevm)
+{
+    ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
+    ose_libmax_addTypedMethod_impl(x, osevm,
+                                   ose_maxgui_addMaxMethod,
+                                   ose_maxgui_method);
+}
+
+static void ose_libmaxgui_addUntypedMethod(ose_bundle osevm)
+{
+    ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
+    ose_libmax_addUntypedMethod_impl(x, osevm,
+                                     ose_maxgui_addMaxMethod,
+                                     ose_maxgui_method);
+}
+
 /* initialization functions */
-void ose_libmaxgui_addFunctionsToEnv(ose_bundle osevm)
+void ose_libmaxgui_addMaxGUIFunctionsToEnv(ose_bundle osevm)
 {
     ose_bundle vm_e = OSEVM_ENV(osevm);
     ose_pushMessage(vm_e, "/gettext", strlen("/gettext"),
@@ -72,6 +282,40 @@ void ose_libmaxgui_addFunctionsToEnv(ose_bundle osevm)
                     1, OSETT_ALIGNEDPTR, ose_libmaxgui_settext);
     ose_pushMessage(vm_e, "/refresh", strlen("/refresh"),
                     1, OSETT_ALIGNEDPTR, ose_libmaxgui_refresh);
+    ose_pushMessage(vm_e, "/patcherview/jgraphics/get",
+                    strlen("/patcherview/jgraphics/get"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_patcherviewGetJGraphics);
+    ose_pushMessage(vm_e, "/jgraphics/source/jrgba/set",
+                    strlen("/jgraphics/source/jrgba/set"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsSetSourceJRGBA);
+    ose_pushMessage(vm_e, "/jgraphics/fill",
+                    strlen("/jgraphics/fill"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsFill);
+    ose_pushMessage(vm_e, "/jbox/width/get",
+                    strlen("/jbox/width/get"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jboxGetWidthForView);
+    ose_pushMessage(vm_e, "/jbox/height/get",
+                    strlen("/jbox/height/get"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jboxGetHeightForView);
+    ose_pushMessage(vm_e, "/jgraphics/moveto",
+                    strlen("/jgraphics/moveto"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsMoveTo);
+    ose_pushMessage(vm_e, "/jgraphics/lineto",
+                    strlen("/jgraphics/lineto"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsLineTo);
+    ose_pushMessage(vm_e, "/method/typed/add",
+                    strlen("/method/typed/add"), 1,
+                    OSETT_ALIGNEDPTR, ose_libmaxgui_addTypedMethod);
+    ose_pushMessage(vm_e, "/method/untyped/add",
+                    strlen("/method/untyped/add"), 1,
+                    OSETT_ALIGNEDPTR, ose_libmaxgui_addUntypedMethod);
 }
 
 void ose_libmaxgui_addObjInfoToEnv(ose_maxobj *x,

@@ -50,9 +50,7 @@
 #include "ose_libmax.h"
 #include "ose_libmaxgui.h"
 
-#ifndef O_SE_GUI_VMSIZE
-#define O_SE_GUI_VMSIZE 524288
-#endif
+#define O_SE_GUI_VMX_SIZE 65536
 
 t_class *o_se_gui_class;
 t_symbol *ps_FullPacket;
@@ -70,11 +68,6 @@ void o_se_gui_respondToString(ose_bundle osevm)
 void o_se_gui_lookup(ose_bundle osevm)
 {
     ose_maxobj_lookup(osevm);
-}
-
-void o_se_gui_paint(ose_maxgui *x, t_object *patcherview)
-{
-
 }
 
 static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
@@ -123,7 +116,56 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
     t_atom *av = NULL;
     dictionary_getatoms(d, gensym("args"), &ac, &av);
 
-    ose_maxgui_init(x, sym, ac, av, O_SE_GUI_VMSIZE);
+#ifdef OSEVM_HAVE_SIZES
+    const int32_t totalsize =
+        OSE_CONTEXT_MAX_OVERHEAD
+        + ((OSEVM_TOTAL_SIZE
+            + O_SE_GUI_VMX_SIZE
+            + OSE_CONTEXT_MESSAGE_OVERHEAD
+            + OSE_CONTEXT_MESSAGE_OVERHEAD)
+           * 2);
+#else
+#error "VM sizes not defined!"
+#endif
+    {
+        x->ob.bytes = (char *)malloc(totalsize);
+        if(!x->ob.bytes)
+        {
+            object_error((t_object *)x,
+                         "couldn't allocate %d bytes for ose vm",
+                         totalsize);
+            ose_maxobj_free(x);
+            return NULL;
+        }
+        x->ob.bundle = ose_newBundleFromCBytes(totalsize, x->ob.bytes);
+        {
+            ose_pushContextMessage(x->ob.bundle,
+                                   (OSEVM_TOTAL_SIZE
+                                    + O_SE_GUI_VMX_SIZE
+                                    + OSE_CONTEXT_MESSAGE_OVERHEAD),
+                                   "/xo");
+            ose_bundle xo = ose_enter(x->ob.bundle, "/xo");
+            x->ob.osevm = osevm_init(xo);
+            ose_pushContextMessage(x->ob.osevm,
+                                   O_SE_GUI_VMX_SIZE, "/_x");
+        }
+        {
+            ose_pushContextMessage(x->ob.bundle,
+                                   (OSEVM_TOTAL_SIZE
+                                    + O_SE_GUI_VMX_SIZE
+                                    + OSE_CONTEXT_MESSAGE_OVERHEAD),
+                                   "/xg");
+            ose_bundle xg = ose_enter(x->ob.bundle, "/xg");
+            x->osevm_gui = osevm_init(xg);
+            ose_pushContextMessage(x->osevm_gui,
+                                   O_SE_GUI_VMX_SIZE, "/_x");
+        }
+    }
+    
+    if(ose_maxgui_init(x, sym, ac, av))
+    {
+        return NULL;
+    }
 
     /* stdlib */
     ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
@@ -132,10 +174,12 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
     ose_libmaxgui_addObjInfoToEnv((ose_maxobj *)x,
                                   OSE_MAXGUI_GET_OSEVM(x),
                                   sym, ac, av);
-    ose_libmax_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
-    ose_libmaxgui_addFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
+    ose_libmax_addStdlibToEnv(OSE_MAXGUI_GET_OSEVM(x));
+    ose_libmaxgui_addMaxGUIFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
 
     ose_maxgui_loadSubclass(x, sym);
+
+    
 
     /* process args */
     ose_maxgui_processArgs(OSE_MAXGUI_GET_OSEVM(x), sym, ac, av);
@@ -167,7 +211,7 @@ void ext_main(void *r)
     c->c_flags |= CLASS_FLAG_NEWDICTIONARY;
     jbox_initclass(c,
                    JBOX_TEXTFIELD | JBOX_FIXWIDTH | JBOX_FONTATTR);
-    class_addmethod(c, (method)o_se_gui_paint, "paint", A_CANT, 0);
+    class_addmethod(c, (method)ose_maxgui_paint, "paint", A_CANT, 0);
     class_addmethod(c, (method)ose_maxgui_enter, "enter", A_CANT, 0);
     class_addmethod(c, (method)ose_maxgui_mousedown, "mousedown",
                     A_CANT, 0);

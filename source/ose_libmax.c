@@ -118,7 +118,7 @@ static void ose_libmax_outlet(ose_bundle osevm)
     int32_t to, ntt, lto, po, lpo;
     ose_getNthPayloadItem(vm_s, 1, o, &to, &ntt, &lto, &po, &lpo);
     ose_alignPtr(vm_s, lpo + 4);
-    void *outlet = ose_readAlignedPtr(vm_s, lpo + 4);
+    const void *outlet = ose_readAlignedPtr(vm_s, lpo + 4);
     ose_drop(vm_s);
     o = ose_getLastBundleElemOffset(vm_s);
     extern t_symbol *ps_FullPacket;
@@ -129,8 +129,9 @@ static void ose_libmax_outlet(ose_bundle osevm)
 static void ose_libmax_makeoutlet(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
     void *outlet = outlet_new(x, "FullPacket");
-    ose_pushAlignedPtr(x->vm_s, outlet);
+    ose_pushAlignedPtr(vm_s, outlet);
 }
 
 static void ose_libmax_makeinlet(ose_bundle osevm)
@@ -148,16 +149,23 @@ static void ose_libmax_makeinlet(ose_bundle osevm)
    though we can't. Later, we can add a code gen or jit stage that
    will do them for real.
 */
-static void ose_libmax_addTypedMethod(ose_bundle osevm)
+void
+ose_libmax_addTypedMethod_impl(ose_maxobj *x,
+                               ose_bundle osevm,
+                               int (*addMaxMethod)(ose_maxobj *,
+                                                   t_symbol *),
+                               void (*_method)(t_object *,
+                                              t_symbol *,
+                                              long,
+                                              t_atom *))
 {
-    ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
-    ose_bundle vm_s = x->vm_s;
+    ose_bundle vm_s = OSEVM_STACK(osevm);
     if(ose_peekType(vm_s) == OSETT_MESSAGE
        && (ose_isStringType(ose_peekMessageArgType(vm_s))))
     {
         t_symbol *name = gensym(ose_peekString(vm_s));
         ose_drop(vm_s);
-        if(!ose_maxobj_addMaxMethod(x, name))
+        if(!addMaxMethod(x, name))
         {
             return;
         }
@@ -198,7 +206,7 @@ static void ose_libmax_addTypedMethod(ose_bundle osevm)
         x->typed_method_ntypes[x->typed_methods_count] = n;
         x->typed_method_names[x->typed_methods_count] = name;
         ++(x->typed_methods_count);
-        object_addmethod(x, (method)ose_maxobj_method, name->s_name,
+        object_addmethod(x, (method)_method, name->s_name,
                          A_GIMME, 0);
     }
     else
@@ -209,19 +217,34 @@ static void ose_libmax_addTypedMethod(ose_bundle osevm)
     }
 }
 
-static void ose_libmax_addUntypedMethod(ose_bundle osevm)
+static void ose_libmax_addTypedMethod(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
-    ose_bundle vm_s = x->vm_s;
+    ose_libmax_addTypedMethod_impl(x, osevm,
+                                   ose_maxobj_addMaxMethod,
+                                   ose_maxobj_method);
+}
+
+void
+ose_libmax_addUntypedMethod_impl(ose_maxobj *x,
+                                 ose_bundle osevm,
+                                 int (*addMaxMethod)(ose_maxobj *,
+                                                     t_symbol *),
+                                 void (*_method)(t_object *,
+                                                t_symbol *,
+                                                long,
+                                                t_atom *))
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
     if(ose_peekType(vm_s) == OSETT_MESSAGE
        && (ose_isStringType(ose_peekMessageArgType(vm_s))))
     {
         const char * const name = ose_peekString(vm_s);
-        if(!ose_maxobj_addMaxMethod(x, gensym(name)))
+        if(!addMaxMethod(x, gensym(name)))
         {
             return;
         }
-        object_addmethod(x, (method)ose_maxobj_method, name, A_GIMME, 0);
+        object_addmethod(x, (method)_method, name, A_GIMME, 0);
         ose_drop(vm_s);
     }
     else
@@ -230,6 +253,32 @@ static void ose_libmax_addUntypedMethod(ose_bundle osevm)
                      "/method/untyped/add: requires the name "
                      "of the method on top of the stack");
     }
+}
+
+static void ose_libmax_addUntypedMethod(ose_bundle osevm)
+{
+    ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
+    ose_libmax_addUntypedMethod_impl(x, osevm,
+                                     ose_maxobj_addMaxMethod,
+                                     ose_maxobj_method);
+    /* ose_bundle vm_s = x->vm_s; */
+    /* if(ose_peekType(vm_s) == OSETT_MESSAGE */
+    /*    && (ose_isStringType(ose_peekMessageArgType(vm_s)))) */
+    /* { */
+    /*     const char * const name = ose_peekString(vm_s); */
+    /*     if(!ose_maxobj_addMaxMethod(x, gensym(name))) */
+    /*     { */
+    /*         return; */
+    /*     } */
+    /*     object_addmethod(x, (method)ose_maxobj_method, name, A_GIMME, 0); */
+    /*     ose_drop(vm_s); */
+    /* } */
+    /* else */
+    /* { */
+    /*     object_error((t_object *)x, */
+    /*                  "/method/untyped/add: requires the name " */
+    /*                  "of the method on top of the stack"); */
+    /* } */
 }
 
 static void ose_libmax_post(ose_bundle osevm)
@@ -253,29 +302,45 @@ static void ose_libmax_post(ose_bundle osevm)
 }
 
 /* initialization functions */
-void ose_libmax_addFunctionsToEnv(ose_bundle osevm)
+void ose_libmax_addStdlibToEnv(ose_bundle osevm)
 {
     ose_bundle vm_e = OSEVM_ENV(osevm);
     ose_pushMessage(vm_e, "/outlet", strlen("/outlet"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_outlet);
     ose_pushMessage(vm_e, "/load", strlen("/load"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_load);
-    ose_pushMessage(vm_e, "/method/typed/add",
-                    strlen("/method/typed/add"), 1,
-                    OSETT_ALIGNEDPTR, ose_libmax_addTypedMethod);
-    ose_pushMessage(vm_e, "/method/untyped/add",
-                    strlen("/method/untyped/add"), 1,
-                    OSETT_ALIGNEDPTR, ose_libmax_addUntypedMethod);
     ose_pushMessage(vm_e, "/makeoutlet", strlen("/makeoutlet"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_makeoutlet);
     ose_pushMessage(vm_e, "/makeinlet", strlen("/makeinlet"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_makeinlet);
     ose_pushMessage(vm_e, "/post", strlen("/post"), 1,
                     OSETT_ALIGNEDPTR, ose_libmax_post);
+    {
+        /* default behavior to clear the stack in case messages
+           aren't handled */
+        ose_pushMessage(vm_e, "/hook/inlet/finalize",
+                        strlen("/hook/inlet/finalize"),
+                        0);
+        ose_pushBundle(vm_e);
+        ose_pushString(vm_e, "/!/clear");
+        ose_push(vm_e);
+        ose_push(vm_e);
+    }
 #ifdef OSE_DEBUG
     ose_pushMessage(vm_e, "/debug", strlen("/debug"), 1,
                     OSETT_ALIGNEDPTR, ose_maxobj_debugFromVM);
 #endif
+}
+
+void ose_libmax_addMaxObjFunctionsToEnv(ose_bundle osevm)
+{
+    ose_bundle vm_e = OSEVM_ENV(osevm);
+    ose_pushMessage(vm_e, "/method/typed/add",
+                    strlen("/method/typed/add"), 1,
+                    OSETT_ALIGNEDPTR, ose_libmax_addTypedMethod);
+    ose_pushMessage(vm_e, "/method/untyped/add",
+                    strlen("/method/untyped/add"), 1,
+                    OSETT_ALIGNEDPTR, ose_libmax_addUntypedMethod);
 }
 
 void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
@@ -284,9 +349,10 @@ void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
                                 long argc,
                                 t_atom *argv)
 {
-    ose_pushMessage(x->vm_e, "/maxobj", strlen("/maxobj"), 1,
+    ose_bundle vm_e = OSEVM_ENV(osevm);
+    ose_pushMessage(vm_e, "/maxobj", strlen("/maxobj"), 1,
                     OSETT_ALIGNEDPTR, (void *)x);
-    ose_pushMessage(x->vm_e, "/name", strlen("/name"), 1,
+    ose_pushMessage(vm_e, "/name", strlen("/name"), 1,
                     OSETT_STRING, sym->s_name);
     /* could also add:
        - args the box was instantiated with

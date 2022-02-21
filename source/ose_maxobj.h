@@ -51,8 +51,7 @@ typedef struct _ose_maxobj
 	int32_t nproxies;
 
 	char *bytes;
-	ose_bundle bundle, osevm, vm_i, vm_s, vm_e, vm_c, vm_d, vm_o,
-        vm_f, vm_g, vm_x;
+	ose_bundle bundle, osevm;
 
     t_symbol **typed_method_names;
     char **typed_method_types;
@@ -71,7 +70,7 @@ void ose_maxobj_debugFromVM(ose_bundle osevm);
 /* utilities for dealing with the maxobj and vm data structures */
 ose_maxobj *ose_maxobj_getMaxObjPtr(ose_bundle osevm);
 int32_t ose_maxobj_getinlet(ose_maxobj *x);
-void ose_maxobj_run(ose_maxobj *x);
+void ose_maxobj_run(ose_maxobj *x, ose_bundle osevm);
 /* outlets */
 void ose_maxobj_outletBundle(void *outlet,
                              t_symbol *msg,
@@ -92,20 +91,29 @@ void ose_maxobj_callMethod(ose_bundle osevm,
                            const char * const name,
                            int32_t namelen);
 int ose_maxobj_typedMethodArgChk(ose_maxobj *x,
+                                 ose_bundle osevm,
                                  int32_t n, const char * const tts,
                                  t_symbol *msg, long ac, t_atom *av);
 void ose_maxobj_untypedMethod(ose_maxobj *x,
+                              ose_bundle osevm,
                               t_symbol *msg,
                               long ac,
                               t_atom *av);
 void ose_maxobj_typedMethod(ose_maxobj *x,
+                            ose_bundle osevm,
                             long method_index,
                             t_symbol *msg,
                             long ac,
                             t_atom *av);
 void ose_maxobj_methodFinalize(ose_maxobj *x,
+                               ose_bundle osevm,
                                const char * const name,
                                const int32_t namelen);
+void ose_maxobj_method_impl(ose_maxobj *x,
+                            ose_bundle osevm,
+                            t_symbol *msg,
+                            long ac,
+                            t_atom *av);
 void ose_maxobj_method(ose_maxobj *x,
                        t_symbol *msg,
                        long ac,
@@ -120,17 +128,32 @@ void ose_maxobj_loadSubclass_impl(ose_maxobj *x,
                                   const char * const filename);
 void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym);
 /* default handlers for max messages */
+void ose_maxobj_FullPacket_impl(ose_maxobj *x, ose_bundle osevm,
+                                long len, long ptr);
 void ose_maxobj_FullPacket(ose_maxobj *x, long len, long ptr);
+void ose_maxobj_anything_impl(ose_maxobj *x,
+                              ose_bundle osevm,
+                              t_symbol *s,
+                              long ac,
+                              t_atom *av);
 void ose_maxobj_anything(ose_maxobj *x,
                          t_symbol *s,
                          long ac,
                          t_atom *av);
+void ose_maxobj_list_impl(ose_maxobj *x,
+                          ose_bundle osevm,
+                          t_symbol *s,
+                          long ac,
+                          t_atom *av);
 void ose_maxobj_list(ose_maxobj *x,
                      t_symbol *s,
                      long ac,
                      t_atom *av);
+void ose_maxobj_float_impl(ose_maxobj *x, ose_bundle osevm, double f);
 void ose_maxobj_float(ose_maxobj *x, double f);
+void ose_maxobj_int_impl(ose_maxobj *x, ose_bundle osevm, long l);
 void ose_maxobj_int(ose_maxobj *x, long l);
+void ose_maxobj_bang_impl(ose_maxobj *x, ose_bundle osevm);
 void ose_maxobj_bang(ose_maxobj *x);
 void ose_maxobj_loadbang(ose_maxobj *x);
 void ose_maxobj_assist(ose_maxobj *x,
@@ -139,11 +162,10 @@ void ose_maxobj_assist(ose_maxobj *x,
                        long a,
                        char *s);
 void ose_maxobj_free(ose_maxobj *x);
-void ose_maxobj_init(ose_maxobj *x,
-                     t_symbol *sym,
-                     long argc,
-                     t_atom *argv,
-                     int32_t vmsize);
+int ose_maxobj_init(ose_maxobj *x,
+                    t_symbol *sym,
+                    long argc,
+                    t_atom *argv);
 
 #ifdef __cplusplus
 }

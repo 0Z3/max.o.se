@@ -48,9 +48,7 @@
 #include "ose_maxobj.h"
 #include "ose_libmax.h"
 
-#ifndef O_SE_VMSIZE
-#define O_SE_VMSIZE 524288
-#endif
+#define O_SE_VMX_SIZE 65536
 
 t_class *o_se_class;
 t_symbol *ps_FullPacket;
@@ -77,11 +75,40 @@ static void *o_se_new(t_symbol *sym, long argc, t_atom *argv)
     {
         return NULL;
     }
-    ose_maxobj_init(x, sym, argc, argv, O_SE_VMSIZE);
+
+#ifdef OSEVM_HAVE_SIZES
+    const int32_t totalsize =
+        OSE_CONTEXT_MAX_OVERHEAD
+        + OSEVM_TOTAL_SIZE
+        + O_SE_VMX_SIZE
+        + OSE_CONTEXT_MESSAGE_OVERHEAD;
+#else
+#error "VM sizes not defined!"
+#endif
+    {
+        x->bytes = (char *)malloc(totalsize);
+        if(!x->bytes)
+        {
+            object_error((t_object *)x,
+                         "couldn't allocate %d bytes for ose vm",
+                         totalsize);
+            ose_maxobj_free(x);
+            return NULL;
+        }
+        x->bundle = ose_newBundleFromCBytes(totalsize, x->bytes);
+        x->osevm = osevm_init(x->bundle);
+        ose_pushContextMessage(x->osevm, 65536, "/_x");
+    }
+    
+    if(ose_maxobj_init(x, sym, argc, argv))
+    {
+        return NULL;
+    }
 
     /* stdlib */
     ose_libmax_addObjInfoToEnv(x, x->osevm, sym, argc, argv);
-    ose_libmax_addFunctionsToEnv(x->osevm);
+    ose_libmax_addStdlibToEnv(x->osevm);
+    ose_libmax_addMaxObjFunctionsToEnv(x->osevm);
 
     ose_maxobj_loadSubclass(x, sym);
 

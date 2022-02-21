@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52AC406527BE82E000D651A1 /* ose_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 52AC406427BE82E000D651A1 /* ose_time.c */; };
+		52AC406627BE82E000D651A1 /* ose_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 52AC406427BE82E000D651A1 /* ose_time.c */; };
 		52C5967425CDCCE800F9E21F /* o.se.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C5967325CDCCE800F9E21F /* o.se.c */; };
 		52D13B622789EEA9001299E5 /* ose_maxobj.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B612789EEA9001299E5 /* ose_maxobj.c */; };
 		52D13B642789FD99001299E5 /* ose_libmax.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D13B632789FD99001299E5 /* ose_libmax.c */; };
@@ -43,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		52A1433B248465BB00C2059E /* o.se.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = o.se.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
+		52AC406427BE82E000D651A1 /* ose_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ose_time.c; path = libose/sys/ose_time.c; sourceTree = "<group>"; };
 		52C5967325CDCCE800F9E21F /* o.se.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = o.se.c; sourceTree = "<group>"; };
 		52D13B612789EEA9001299E5 /* ose_maxobj.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ose_maxobj.c; sourceTree = "<group>"; };
 		52D13B632789FD99001299E5 /* ose_libmax.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ose_libmax.c; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 				52D13B9C279CC526001299E5 /* ose_vm.c */,
 				52D13B99279CC524001299E5 /* ose.c */,
 				52D13BB7279CC6B8001299E5 /* ose_load.c */,
+				52AC406427BE82E000D651A1 /* ose_time.c */,
 				52D13B84278A461C001299E5 /* commonsyms.c */,
 				52D13B87278A4625001299E5 /* MaxAPI.framework */,
 				52A1433C248465BB00C2059E /* Products */,
@@ -260,6 +264,7 @@
 				52D13B622789EEA9001299E5 /* ose_maxobj.c in Sources */,
 				52D13BA5279CC527001299E5 /* ose_stackops.c in Sources */,
 				52D13BA7279CC527001299E5 /* ose_builtins.c in Sources */,
+				52AC406527BE82E000D651A1 /* ose_time.c in Sources */,
 				52D13BB5279CC527001299E5 /* ose_symtab.c in Sources */,
 				52D13BA3279CC527001299E5 /* ose.c in Sources */,
 				52D13B642789FD99001299E5 /* ose_libmax.c in Sources */,
@@ -282,6 +287,7 @@
 				52D13BB4279CC527001299E5 /* ose_print.c in Sources */,
 				52D13BAE279CC527001299E5 /* ose_match.c in Sources */,
 				52D13BA6279CC527001299E5 /* ose_stackops.c in Sources */,
+				52AC406627BE82E000D651A1 /* ose_time.c in Sources */,
 				52D13B86278A461C001299E5 /* commonsyms.c in Sources */,
 				52D13BB0279CC527001299E5 /* ose_util.c in Sources */,
 				52D13B78278A2A00001299E5 /* ose_libmax.c in Sources */,
@@ -484,7 +490,6 @@
 					"-DOSE_CONF_ADDRESS_ANONVAL_SIZE=4",
 					"-glldb",
 					"-DOSE_CONF_DEBUG",
-					"-DO_SE_VMSIZE=524288",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.john-maccallum.ose";
@@ -535,7 +540,6 @@
 					"-DOSE_CONF_ADDRESS_ANONVAL='\"/\\\\0\\\\0\\\\0\"'",
 					"-DOSE_CONF_ADDRESS_ANONVAL_LEN=1",
 					"-DOSE_CONF_ADDRESS_ANONVAL_SIZE=4",
-					"-DO_SE_VMSIZE=524288",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.john-maccallum.ose";
@@ -588,7 +592,6 @@
 					"-DOSE_CONF_ADDRESS_ANONVAL_SIZE=4",
 					"-glldb",
 					"-DOSE_CONF_DEBUG",
-					"-DO_SE_VMSIZE=524288",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.john-maccallum.ose";
@@ -639,9 +642,6 @@
 					"-DOSE_CONF_ADDRESS_ANONVAL='\"/\\\\0\\\\0\\\\0\"'",
 					"-DOSE_CONF_ADDRESS_ANONVAL_LEN=1",
 					"-DOSE_CONF_ADDRESS_ANONVAL_SIZE=4",
-					"-glldb",
-					"-DOSE_CONF_DEBUG",
-					"-DO_SE_VMSIZE=524288",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.john-maccallum.ose";
