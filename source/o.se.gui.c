@@ -168,21 +168,42 @@ static void *o_se_gui_new(t_symbol *sym, long argc, t_atom *argv)
     }
 
     /* stdlib */
-    ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
-                               OSE_MAXGUI_GET_OSEVM(x),
-                               sym, ac, av);
-    ose_libmaxgui_addObjInfoToEnv((ose_maxobj *)x,
-                                  OSE_MAXGUI_GET_OSEVM(x),
-                                  sym, ac, av);
-    ose_libmax_addStdlibToEnv(OSE_MAXGUI_GET_OSEVM(x));
-    ose_libmaxgui_addMaxGUIFunctionsToEnv(OSE_MAXGUI_GET_OSEVM(x));
+    {
+        /* outer GUI object */
+        ose_bundle osevm_gui =
+            OSE_MAXGUI_GET_OSEVM_GUI((ose_maxgui *)x);
+        ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
+                                   osevm_gui,
+                                   sym, ac, av);
+        ose_libmaxgui_addObjInfoToEnv((ose_maxobj *)x,
+                                      osevm_gui,
+                                      sym, ac, av);
+        ose_libmax_addStdlibToEnv(osevm_gui);
+        ose_libmaxgui_addMaxGUIFunctionsToEnv(osevm_gui);
+        ose_libmaxgui_addMethodAddFunctionsToEnv(osevm_gui);
+    }
+    {
+        /* inner object */
+        ose_bundle osevm =
+            OSE_MAXGUI_GET_OSEVM(x);
+        ose_libmax_addObjInfoToEnv((ose_maxobj *)x,
+                                   osevm,
+                                   sym, ac, av);
+        ose_libmaxgui_addObjInfoToEnv((ose_maxobj *)x,
+                                      osevm,
+                                      sym, ac, av);
+        ose_libmax_addStdlibToEnv(osevm);
+        ose_libmaxgui_addMaxGUIFunctionsToEnv(osevm);
+        ose_libmaxgui_addMethodAddFunctionsToEnv(osevm);
+    }
 
     ose_maxgui_loadSubclass(x, sym);
 
     
 
     /* process args */
-    ose_maxgui_processArgs(OSE_MAXGUI_GET_OSEVM(x), sym, ac, av);
+    ose_maxobj_processArgs(OSE_MAXGUI_GET_OSEVM(x), sym, ac, av);
+    ose_maxgui_processArgs(OSE_MAXGUI_GET_OSEVM_GUI(x), sym, ac, av);
 
     
     t_object *textfield = jbox_get_textfield((t_object *)x);
@@ -214,6 +235,8 @@ void ext_main(void *r)
     class_addmethod(c, (method)ose_maxgui_paint, "paint", A_CANT, 0);
     class_addmethod(c, (method)ose_maxgui_enter, "enter", A_CANT, 0);
     class_addmethod(c, (method)ose_maxgui_mousedown, "mousedown",
+                    A_CANT, 0);
+    class_addmethod(c, (method)ose_maxgui_mouseup, "mouseup",
                     A_CANT, 0);
 
     /* 

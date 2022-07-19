@@ -40,7 +40,7 @@
 static void ose_libmaxgui_gettext(ose_bundle osevm)
 {
     ose_maxgui *x = (ose_maxgui *)ose_maxobj_getMaxObjPtr(osevm);
-    ose_maxgui_gettext(x);
+    ose_maxgui_gettext(x, osevm);
 }
 
 static void ose_libmaxgui_settext(ose_bundle osevm)
@@ -133,7 +133,7 @@ static void ose_libmaxgui_jboxGetWidthForView(ose_bundle osevm)
         if(pv)
         {
             t_rect r;
-            jbox_get_rect_for_view(x, pv, &r);
+            t_max_err e = jbox_get_rect_for_view(x, pv, &r);
             ose_pushInt32(vm_s, r.width);
         }
     }
@@ -153,7 +153,7 @@ static void ose_libmaxgui_jboxGetHeightForView(ose_bundle osevm)
         if(pv)
         {
             t_rect r;
-            jbox_get_rect_for_view(x, pv, &r);
+            t_max_err e = jbox_get_rect_for_view(x, pv, &r);
             ose_pushInt32(vm_s, r.height);
         }
     }
@@ -186,28 +186,53 @@ static void ose_libmaxgui_jgraphicsSetSourceJRGBA(ose_bundle osevm)
     }
 }
 
+static void ose_libmaxgui_jgraphicsSetLineWidth(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 2))
+    {
+        float w = ose_popFloat(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_set_line_width(gc, w);
+        }
+    }
+    else
+    {
+
+    }
+}
+
 static void ose_libmaxgui_jgraphicsFill(ose_bundle osevm)
 {
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
-    if(ose_bundleHasAtLeastNElems(vm_s, 1)
-       && ose_peekType(vm_s) == OSETT_MESSAGE
-       && ose_peekMessageArgType(vm_s) == OSETT_BLOB)
+    if(ose_bundleHasAtLeastNElems(vm_s, 1))
     {
-        int32_t o = ose_getLastBundleElemOffset(vm_s);
-        int32_t to, ntt, lto, po, lpo;
-        void *gc = NULL;
-        ose_getNthPayloadItem(vm_s, 1, o, &to, &ntt, &lto, &po, &lpo);
-        ose_alignPtr(vm_s, lpo + 4);
-        gc = ose_readAlignedPtr(vm_s, lpo + 4);
+        t_jgraphics *gc = getPtr(vm_s);
         if(gc)
         {
-            /* jgraphics_move_to(gc, 0, 0); */
-            /* jgraphics_line_to(gc, 100, 0); */
-            /* jgraphics_line_to(gc, 100, 100); */
-            /* jgraphics_line_to(gc, 0, 100); */
-            /* jgraphics_line_to(gc, 0, 0); */
             jgraphics_fill(gc);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsStroke(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 1))
+    {
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_stroke(gc);
         }
     }
     else
@@ -256,6 +281,99 @@ static void ose_libmaxgui_jgraphicsLineTo(ose_bundle osevm)
     }
 }
 
+static void ose_libmaxgui_jgraphicsRectangle(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 5))
+    {
+        int32_t h = ose_popInt32(vm_s);
+        int32_t w = ose_popInt32(vm_s);
+        int32_t y = ose_popInt32(vm_s);
+        int32_t x = ose_popInt32(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_rectangle(gc, x, y, w, h);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsRoundedRectangle(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 7))
+    {
+        int32_t p2 = ose_popInt32(vm_s);
+        int32_t p1 = ose_popInt32(vm_s);
+        int32_t h = ose_popInt32(vm_s);
+        int32_t w = ose_popInt32(vm_s);
+        int32_t y = ose_popInt32(vm_s);
+        int32_t x = ose_popInt32(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        if(gc)
+        {
+            jgraphics_rectangle_rounded(gc, x, y, w, h, p1, p2);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_setTextMargins(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 5))
+    {
+        int32_t l = ose_popInt32(vm_s);
+        int32_t t = ose_popInt32(vm_s);
+        int32_t r = ose_popInt32(vm_s);
+        int32_t b = ose_popInt32(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        t_object *tf = jbox_get_textfield((t_object *)x);
+        if(gc && tf)
+        {
+            textfield_set_textmargins(tf, l, t, r, b);
+        }
+    }
+    else
+    {
+
+    }
+}
+
+static void ose_libmaxgui_jgraphicsSetTextColorRGBA(ose_bundle osevm)
+{
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_maxgui *x = ose_maxobj_getMaxObjPtr(osevm);
+    if(ose_bundleHasAtLeastNElems(vm_s, 5))
+    {
+        float a = ose_popFloat(vm_s);
+        float b = ose_popFloat(vm_s);
+        float g = ose_popFloat(vm_s);
+        float r = ose_popFloat(vm_s);
+        t_jgraphics *gc = getPtr(vm_s);
+        t_object *tf = jbox_get_textfield((t_object *)x);
+        if(gc && tf)
+        {
+            t_jrgba c = (t_jrgba){r, g, b, a};
+            textfield_set_textcolor(tf, &c);
+        }
+    }
+    else
+    {
+
+    }
+}
+
 static void ose_libmaxgui_addTypedMethod(ose_bundle osevm)
 {
     ose_maxobj *x = ose_maxobj_getMaxObjPtr(osevm);
@@ -290,10 +408,18 @@ void ose_libmaxgui_addMaxGUIFunctionsToEnv(ose_bundle osevm)
                     strlen("/jgraphics/source/jrgba/set"),
                     1, OSETT_ALIGNEDPTR,
                     ose_libmaxgui_jgraphicsSetSourceJRGBA);
+    ose_pushMessage(vm_e, "/jgraphics/line/width/set",
+                    strlen("/jgraphics/line/width/set"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsSetLineWidth);
     ose_pushMessage(vm_e, "/jgraphics/fill",
                     strlen("/jgraphics/fill"),
                     1, OSETT_ALIGNEDPTR,
                     ose_libmaxgui_jgraphicsFill);
+    ose_pushMessage(vm_e, "/jgraphics/stroke",
+                    strlen("/jgraphics/stroke"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsStroke);
     ose_pushMessage(vm_e, "/jbox/width/get",
                     strlen("/jbox/width/get"),
                     1, OSETT_ALIGNEDPTR,
@@ -310,6 +436,27 @@ void ose_libmaxgui_addMaxGUIFunctionsToEnv(ose_bundle osevm)
                     strlen("/jgraphics/lineto"),
                     1, OSETT_ALIGNEDPTR,
                     ose_libmaxgui_jgraphicsLineTo);
+    ose_pushMessage(vm_e, "/jgraphics/rectangle",
+                    strlen("/jgraphics/rectangle"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsRectangle);
+    ose_pushMessage(vm_e, "/jgraphics/rounded/rectangle",
+                    strlen("/jgraphics/rounded/rectangle"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsRoundedRectangle);
+    ose_pushMessage(vm_e, "/textfield/margins/set",
+                    strlen("/textfield/margins/set"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_setTextMargins);
+    ose_pushMessage(vm_e, "/textfield/textcolor/rgba/set",
+                    strlen("/textfield/textcolor/rgba/set"),
+                    1, OSETT_ALIGNEDPTR,
+                    ose_libmaxgui_jgraphicsSetTextColorRGBA);
+}
+
+void ose_libmaxgui_addMethodAddFunctionsToEnv(ose_bundle osevm)
+{
+    ose_bundle vm_e = OSEVM_ENV(osevm);
     ose_pushMessage(vm_e, "/method/typed/add",
                     strlen("/method/typed/add"), 1,
                     OSETT_ALIGNEDPTR, ose_libmaxgui_addTypedMethod);

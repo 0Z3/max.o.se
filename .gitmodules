@@ -10,3 +10,6 @@
 [submodule "source/o.se.db"]
 	path = source/o.se.db
 	url = https://github.com/0Z3/o.se.db
+[submodule "source/o.se.o.expr"]
+	path = source/o.se.o.expr
+	url = https://github.com/0Z3/o.se.o.expr

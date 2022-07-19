@@ -332,7 +332,7 @@ void ose_libmax_addStdlibToEnv(ose_bundle osevm)
 #endif
 }
 
-void ose_libmax_addMaxObjFunctionsToEnv(ose_bundle osevm)
+void ose_libmax_addMethodAddFunctionsToEnv(ose_bundle osevm)
 {
     ose_bundle vm_e = OSEVM_ENV(osevm);
     ose_pushMessage(vm_e, "/method/typed/add",

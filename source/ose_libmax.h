@@ -53,7 +53,7 @@ ose_libmax_addUntypedMethod_impl(ose_maxobj *x,
                                                 long,
                                                 t_atom *));
 void ose_libmax_addStdlibToEnv(ose_bundle osevm);
-void ose_libmax_addMaxObjFunctionsToEnv(ose_bundle osevm);
+void ose_libmax_addMethodAddFunctionsToEnv(ose_bundle osevm);
 void ose_libmax_addObjInfoToEnv(ose_maxobj *x,
                                 ose_bundle osevm,
                                 t_symbol *sym,

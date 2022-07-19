@@ -49,6 +49,7 @@ typedef struct _ose_maxgui
 } ose_maxgui;
 
 #define OSE_MAXGUI_GET_OSEVM(x) (((ose_maxobj *)x)->osevm)
+#define OSE_MAXGUI_GET_OSEVM_GUI(x) ((x)->osevm_gui)
 
 void ose_maxgui_method(ose_maxobj *x,
                        t_symbol *msg,
@@ -80,11 +81,14 @@ void ose_maxgui_float(ose_maxobj *x, double f);
 void ose_maxgui_int(ose_maxobj *x, long l);
 void ose_maxgui_bang(ose_maxobj *x);
 void ose_maxgui_paint(ose_maxgui *x, t_object *patcherview);
-void ose_maxgui_gettext(ose_maxgui *x);
+void ose_maxgui_gettext(ose_maxgui *x, ose_bundle osevm);
 void ose_maxgui_enter(ose_maxgui *x);
 void ose_maxgui_mousedown(ose_maxgui *x,
                           t_object *patcherview,
                           t_pt pt, long modifiers);
+void ose_maxgui_mouseup(ose_maxgui *x,
+                        t_object *patcherview,
+                        t_pt pt, long modifiers);
 
 #ifdef __cplusplus
 }

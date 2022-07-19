@@ -1,0 +1,134 @@
+/#/ The patcherview object is sitting on top of the stack;
+/#/ store it in the env
+/'/@/pv
+/#/ Store the width and height of the box in the env
+/'/$/pv
+/'/!/jbox/width/get
+/'/!/nip
+/'/@/w
+/'/$/pv
+/'/!/jbox/height/get
+/'/!/nip
+/'/@/h
+/#/ Now get the graphics context
+/'/$/pv
+/'/!/patcherview/jgraphics/get
+/#/ Set the text color
+/f/1.
+/f/1.
+/f/1.
+/f/1.
+/'/!/textfield/textcolor/rgba/set
+/#/ Set the color of the background fill
+/f/.29
+/f/.31
+/f/.302
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/#/ Specify the rect and fill it
+/i/0
+/i/0
+/'/$/w
+/'/$/h
+/i/8
+/i/8
+/'/!/jgraphics/rounded/rectangle
+/'/!/jgraphics/fill
+/#/ Now paint the frame
+/#/ /f/2.
+/#/ /'/!/jgraphics/line/width/set
+/f/0.
+/f/0.
+/f/0.
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/i/2
+/i/2
+/'/!/jgraphics/moveto
+/i/2
+/'/$/w
+/'/!/sub
+/i/2
+/'/!/jgraphics/lineto
+/i/2
+/'/$/w
+/'/!/sub
+/i/2
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+/i/2
+/i/2
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+/i/2
+/i/2
+/'/!/jgraphics/lineto
+/'/!/jgraphics/stroke
+/#/ draw the bottom rectangle
+/#/ /i/0
+/#/ /i/14
+/#/ /'/$/h
+/#/ /'/!/sub
+/#/ /'/!/jgraphics/moveto
+/#/ /'/$/w
+/#/ /i/14
+/#/ /'/$/h
+/#/ /'/!/sub
+/#/ /'/!/jgraphics/lineto
+/#/ /'/$/w
+/#/ /'/$/h
+/#/ /'/!/jgraphics/lineto
+/#/ /i/0
+/#/ /'/$/h
+/#/ /'/!/jgraphics/lineto
+/#/ /i/0
+/#/ /i/14
+/#/ /'/$/h
+/#/ /'/!/sub
+/#/ /'/!/jgraphics/lineto
+/i/0
+/i/10
+/'/$/h
+/'/!/sub
+/'/$/w
+/i/10
+/i/8
+/i/8
+/'/!/jgraphics/rounded/rectangle
+/'/!/jgraphics/fill
+/#/ Set the text margins
+/i/15
+/i/5
+/i/6
+/i/6
+/'/!/textfield/margins/set
+
+/!/make/bundle
+
+/'/!/drop
+/!/bundle/all
+/s/paint
+/!/@
+
+/'/!/clear
+/s/mousedown
+/!/@
+
+/'/!/clear
+/s/mouseup
+/!/@
+
+/'/</_e
+/!/bundle/all
+/@/hook/gui/finalize
+
+/#/ store our env in the _x bundle
+/'/>/_e
+/'/</_x
+/'/!/make/bundle
+/'/</_e
+
+/!/bundle/all
+/@/hook/init/post

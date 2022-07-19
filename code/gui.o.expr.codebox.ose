@@ -1,0 +1,110 @@
+/#/ The patcherview object is sitting on top of the stack;
+/#/ store it in the env
+/'/@/pv
+/#/ Store the width and height of the box in the env
+/'/$/pv
+/'/!/jbox/width/get
+/'/!/nip
+/'/@/w
+/'/$/pv
+/'/!/jbox/height/get
+/'/!/nip
+/'/@/h
+/#/ Now get the graphics context
+/'/$/pv
+/'/!/patcherview/jgraphics/get
+/#/ Set the color of the top bar and outline
+/f/.29
+/f/.31
+/f/.302
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/#/ Specify the rect and fill it
+/i/0
+/i/0
+/'/$/w
+/'/$/h
+/'/!/jgraphics/rectangle
+/'/!/jgraphics/fill
+/#/ Now paint the text area white
+/f/1.
+/f/1.
+/f/1.
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/i/2
+/i/10
+/i/4
+/'/$/w
+/'/!/sub
+/i/12
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/rectangle
+/'/!/jgraphics/fill
+/#/ Set the text margins
+/i/5
+/i/5
+/i/13
+/i/5
+/'/!/textfield/margins/set
+
+/!/make/bundle
+/'/$/drawclickindicator
+/'/!/blob/toelem
+/'/$/mousedown
+/'/!/if
+/'/!/drop
+
+/'/!/drop
+/!/bundle/all
+/s/paint
+/!/@
+
+/#/ Set the color of the top bar and outline
+/#/ 0.810 0.900 0.910 1.000
+/f/.81
+/f/.9
+/f/.91
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/#/ Specify the rect and fill it
+/i/2
+/i/2
+/i/4
+/'/$/w
+/'/!/sub
+/i/6
+/'/!/jgraphics/rectangle
+/'/!/jgraphics/fill
+/!/bundle/all
+/@/drawclickindicator
+
+/'/!/clear
+/i/1
+/'/@/mousedown
+/'/!/refresh
+/!/bundle/all
+/s/mousedown
+/!/@
+
+/'/!/clear
+/i/0
+/'/@/mousedown
+/'/!/refresh
+/!/bundle/all
+/s/mouseup
+/!/@
+
+/'/</_e
+/!/bundle/all
+/@/hook/gui/finalize
+
+/#/ store our env in the _x bundle
+/'/>/_e
+/'/</_x
+/'/!/make/bundle
+/'/</_e
+
+/!/bundle/all
+/@/hook/init/post

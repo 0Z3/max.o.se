@@ -97,7 +97,7 @@ static void *o_se_new(t_symbol *sym, long argc, t_atom *argv)
         }
         x->bundle = ose_newBundleFromCBytes(totalsize, x->bytes);
         x->osevm = osevm_init(x->bundle);
-        ose_pushContextMessage(x->osevm, 65536, "/_x");
+        ose_pushContextMessage(x->osevm, O_SE_VMX_SIZE, "/_x");
     }
     
     if(ose_maxobj_init(x, sym, argc, argv))
@@ -108,9 +108,9 @@ static void *o_se_new(t_symbol *sym, long argc, t_atom *argv)
     /* stdlib */
     ose_libmax_addObjInfoToEnv(x, x->osevm, sym, argc, argv);
     ose_libmax_addStdlibToEnv(x->osevm);
-    ose_libmax_addMaxObjFunctionsToEnv(x->osevm);
+    ose_libmax_addMethodAddFunctionsToEnv(x->osevm);
 
-    ose_maxobj_loadSubclass(x, sym);
+    ose_maxobj_loadSubclass(x, x->osevm, sym);
 
     /* process args */
     ose_maxobj_processArgs(x->osevm, sym, argc, argv);

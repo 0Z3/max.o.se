@@ -98,30 +98,44 @@ void ose_maxgui_processArgs(ose_bundle osevm,
 
 /* class and subclass */
 
+void ose_maxgui_loadSubclass_impl(ose_maxgui *x,
+                                  const char * const filename)
+{
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_bundle osevm_gui = OSE_MAXGUI_GET_OSEVM_GUI(x);
+    char filename_gui[MAX_PATH_CHARS];
+    x->filename = gensym(filename);
+    snprintf(filename_gui, MAX_PATH_CHARS,
+             "gui.%s", filename);
+    ose_maxobj_loadSubclass_impl(x, osevm, filename);
+    ose_maxobj_loadSubclass_impl(x, osevm_gui, filename_gui);
+}
+
 void ose_maxgui_loadSubclass(ose_maxgui *x, t_symbol *sym)
 {
-    ose_bundle vm_i = OSEVM_INPUT(OSE_MAXGUI_GET_OSEVM(x));
+    /* ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x); */
+    /* ose_bundle osevm_gui = OSE_MAXGUI_GET_OSEVM_GUI(x); */
     if(sym->s_name[8])
     {
         char filename[MAX_PATH_CHARS];
         snprintf(filename, MAX_PATH_CHARS,
                  "%s.ose", sym->s_name + 9);
-        ose_maxobj_loadSubclass_impl(x, filename);
-        x->filename = gensym(filename);
+        ose_maxgui_loadSubclass_impl(x, filename);
     }
     else if(x->filename)
     {
-        ose_maxobj_loadSubclass_impl(x, x->filename->s_name);
+        ose_maxgui_loadSubclass_impl(x, x->filename->s_name);
+        /* ose_maxobj_loadSubclass_impl(x, x->filename->s_name); */
     }
 }
 
 /* max methods */
 
 void ose_maxgui_methodFinalize(ose_maxgui *x,
+                               ose_bundle osevm,
                                const char * const name,
                                const int32_t namelen)
 {
-    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_maxobj_callMethod(osevm, name, namelen);
     ose_maxobj_run((ose_maxobj *)x, osevm);
@@ -145,7 +159,14 @@ void ose_maxgui_methodFinalize(ose_maxgui *x,
 
 void ose_maxgui_FullPacket(ose_maxobj *x, long len, long ptr)
 {
-    ose_maxobj_FullPacket_impl(x, x->osevm, len, ptr);
+    ose_bundle osevm_gui = OSE_MAXGUI_GET_OSEVM_GUI((ose_maxgui *)x);
+    ose_maxobj_FullPacket(x, len, ptr);
+    ose_maxobj_FullPacket_impl(x,
+                               osevm_gui,
+                               len, ptr);
+    ose_maxgui_methodFinalize(x, osevm_gui,
+                              "FullPacket",
+                              strlen("FullPacket"));
 }
 
 void ose_maxgui_anything(ose_maxobj *x,
@@ -179,19 +200,14 @@ void ose_maxgui_bang(ose_maxobj *x)
     ose_maxobj_bang_impl(x, x->osevm);
 }
 
-void ose_maxgui_paint(ose_maxgui *x, t_object *patcherview)
-{
-    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
-    ose_bundle vm_s = OSEVM_STACK(osevm);
-    ose_pushAlignedPtr(vm_s, patcherview);
-    ose_maxgui_methodFinalize(x, "paint", strlen("paint"));
-}
-
 int ose_maxgui_init(ose_maxgui *x,
                      t_symbol *sym,
                      long argc,
                      t_atom *argv)
 {
+    *((intptr_t *)(ose_getBundlePtr(OSE_MAXGUI_GET_OSEVM_GUI(x))
+                   + OSEVM_CACHE_OFFSET_8))
+        = (intptr_t)x;
     return ose_maxobj_init(x, sym, argc, argv);
 }
 
@@ -201,9 +217,16 @@ void ose_maxgui_free(ose_maxgui *x)
     ose_maxobj_free((ose_maxgui *)x);
 }
 
-void ose_maxgui_gettext(ose_maxgui *x)
+void ose_maxgui_paint(ose_maxgui *x, t_object *patcherview)
 {
-    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM_GUI(x);
+    ose_bundle vm_s = OSEVM_STACK(osevm);
+    ose_pushAlignedPtr(vm_s, patcherview);
+    ose_maxgui_methodFinalize(x, osevm, "paint", strlen("paint"));
+}
+
+void ose_maxgui_gettext(ose_maxgui *x, ose_bundle osevm)
+{
     ose_bundle vm_s = OSEVM_STACK(osevm);
 	long size   = 0;
     char *text  = NULL;
@@ -222,21 +245,56 @@ void ose_maxgui_gettext(ose_maxgui *x)
 
 void ose_maxgui_enter(ose_maxgui *x)
 {
-    ose_maxgui_gettext(x);
-    ose_maxgui_methodFinalize(x, "enter", strlen("enter"));
+    ose_bundle osevm_gui = OSE_MAXGUI_GET_OSEVM_GUI(x);
+    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
+    ose_maxgui_gettext(x, osevm);
+    ose_maxgui_gettext(x, osevm_gui);
+    ose_maxgui_methodFinalize(x, osevm,
+                              "enter", strlen("enter"));
+    ose_maxgui_methodFinalize(x, osevm_gui,
+                              "enter", strlen("enter"));
 }
 
 void ose_maxgui_mousedown(ose_maxgui *x,
                           t_object *patcherview,
                           t_pt pt, long modifiers)
 {
-    ose_bundle osevm = OSE_MAXGUI_GET_OSEVM(x);
-    ose_bundle vm_s = OSEVM_STACK(osevm);
-    ose_pushMessage(vm_s, "/y", strlen("/y"),
-                    1, OSETT_FLOAT, pt.y);
-    ose_pushMessage(vm_s, "/x", strlen("/x"),
-                    1, OSETT_FLOAT, pt.x);
-    ose_pushMessage(vm_s, "/modifiers", strlen("/modifiers"),
-                    1, OSETT_INT32, modifiers);
-    ose_maxgui_methodFinalize(x, "mousedown", strlen("mousedown"));
+    ose_bundle osevms[] = {
+        OSE_MAXGUI_GET_OSEVM(x),
+        OSE_MAXGUI_GET_OSEVM_GUI(x)
+    };
+    for(int i = 0; i < 2; i++)
+    {
+        ose_bundle vm_s = OSEVM_STACK(osevms[i]);
+        ose_pushMessage(vm_s, "/y", strlen("/y"),
+                        1, OSETT_FLOAT, pt.y);
+        ose_pushMessage(vm_s, "/x", strlen("/x"),
+                        1, OSETT_FLOAT, pt.x);
+        ose_pushMessage(vm_s, "/modifiers", strlen("/modifiers"),
+                        1, OSETT_INT32, modifiers);
+        ose_maxgui_methodFinalize(x, osevms[i],
+                                  "mousedown", strlen("mousedown"));
+    }
+}
+
+void ose_maxgui_mouseup(ose_maxgui *x,
+                          t_object *patcherview,
+                          t_pt pt, long modifiers)
+{
+    ose_bundle osevms[] = {
+        OSE_MAXGUI_GET_OSEVM(x),
+        OSE_MAXGUI_GET_OSEVM_GUI(x)
+    };
+    for(int i = 0; i < 2; i++)
+    {
+        ose_bundle vm_s = OSEVM_STACK(osevms[i]);
+        ose_pushMessage(vm_s, "/y", strlen("/y"),
+                        1, OSETT_FLOAT, pt.y);
+        ose_pushMessage(vm_s, "/x", strlen("/x"),
+                        1, OSETT_FLOAT, pt.x);
+        ose_pushMessage(vm_s, "/modifiers", strlen("/modifiers"),
+                        1, OSETT_INT32, modifiers);
+        ose_maxgui_methodFinalize(x, osevms[i],
+                                  "mouseup", strlen("mouseup"));
+    }
 }

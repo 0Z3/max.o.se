@@ -1,0 +1,253 @@
+/#/ The patcherview object is sitting on top of the stack;
+/#/ store it in the env
+/'/@/pv
+/#/ Store the width and height of the box in the env
+/'/$/pv
+/'/!/jbox/width/get
+/'/!/nip
+/'/@/w
+/'/$/pv
+/'/!/jbox/height/get
+/'/!/nip
+/'/@/h
+/#/ Now get the graphics context
+/'/$/pv
+/'/!/patcherview/jgraphics/get
+
+/#/ Draw the box background
+/#/ /f/.29
+/#/ /f/.31
+/#/ /f/.302
+/#/ /f/1.
+/f/1.
+/f/1.
+/f/1.
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+/#/ Specify the rect and fill it
+/i/0
+/i/0
+/'/!/jgraphics/moveto
+/'/$/w
+/i/0
+/'/!/jgraphics/lineto
+/'/$/w
+/i/10
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+/i/10
+/'/$/w
+/'/!/sub
+/'/$/h
+/'/!/jgraphics/lineto
+/i/0
+/'/$/h
+/'/!/jgraphics/lineto
+/i/0
+/i/0
+/'/!/jgraphics/lineto
+/'/!/jgraphics/fill
+
+/#/ Draw the outline
+/f/2.
+/'/!/jgraphics/line/width/set
+/f/.29
+/f/.31
+/f/.302
+/f/1.
+/#/ /f/1.
+/#/ /f/1.
+/#/ /f/1.
+/#/ /f/1.
+/'/!/jgraphics/source/jrgba/set
+/#/ rect
+/i/10
+/'/$/w
+/'/!/sub
+/i/1
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/moveto
+
+/i/1
+/i/1
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/i/1
+/i/1
+/'/!/jgraphics/lineto
+
+/i/1
+/'/$/w
+/'/!/sub
+/i/1
+/'/!/jgraphics/lineto
+
+/i/1
+/'/$/w
+/'/!/sub
+/i/10
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/'/!/jgraphics/stroke
+
+/#/ thin diagonal
+/f/1.
+/'/!/jgraphics/line/width/set
+
+/'/$/w
+/i/11
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/moveto
+
+/i/11
+/'/$/w
+/'/!/sub
+/'/$/h
+/'/!/jgraphics/lineto
+
+/'/!/jgraphics/stroke
+
+/#/ triangle
+/f/2.
+/'/!/jgraphics/line/width/set
+
+/i/1
+/'/$/w
+/'/!/sub
+/i/11
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/moveto
+
+/i/11
+/'/$/w
+/'/!/sub
+/i/11
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/i/11
+/'/$/w
+/'/!/sub
+/i/1
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/'/!/jgraphics/stroke
+
+/#/ Now paint the text area white
+/#/ /f/1.
+/#/ /f/1.
+/#/ /f/1.
+/#/ /f/1.
+/#/ /'/!/jgraphics/source/jrgba/set
+/#/ /i/2
+/#/ /i/2
+/#/ /i/4
+/#/ /'/$/w
+/#/ /'/!/sub
+/#/ /i/4
+/#/ /'/$/h
+/#/ /'/!/sub
+/#/ /'/!/jgraphics/rectangle
+/#/ /'/!/jgraphics/fill
+/#/ Set the text margins
+/i/5
+/i/15
+/i/5
+/i/5
+/'/!/textfield/margins/set
+
+/!/make/bundle
+/'/$/drawclickindicator
+/'/!/blob/toelem
+/'/$/mousedown
+/'/!/if
+/'/!/drop
+
+/'/!/drop
+/!/bundle/all
+/s/paint
+/!/@
+
+/#/ fill triangle on mousedown
+/f/.29
+/f/.31
+/f/.302
+/f/1.
+/'/!/jgraphics/source/jrgba/set
+
+/'/$/w
+/i/10
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/moveto
+
+/i/10
+/'/$/w
+/'/!/sub
+/'/$/h
+/'/!/jgraphics/lineto
+
+/i/10
+/'/$/w
+/'/!/sub
+/i/10
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/'/$/w
+/i/10
+/'/$/h
+/'/!/sub
+/'/!/jgraphics/lineto
+
+/'/!/jgraphics/fill
+
+/i/6
+/i/14
+/i/6
+/i/6
+/'/!/textfield/margins/set
+
+/!/bundle/all
+/@/drawclickindicator
+
+/'/!/clear
+/i/1
+/'/@/mousedown
+/'/!/refresh
+/!/bundle/all
+/s/mousedown
+/!/@
+
+/'/!/clear
+/i/0
+/'/@/mousedown
+/'/!/refresh
+/!/bundle/all
+/s/mouseup
+/!/@
+
+/'/</_e
+/!/bundle/all
+/@/hook/gui/finalize
+
+/#/ store our env in the _x bundle
+/'/>/_e
+/'/</_x
+/'/!/make/bundle
+/'/</_e
+
+/!/bundle/all
+/@/hook/init/post

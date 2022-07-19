@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 2,
-			"revision" : 1,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -41,6 +41,122 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"fontface" : 0,
+					"id" : "obj-16",
+					"linecount" : 3,
+					"maxclass" : "o.display",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 745.0, 212.0, 150.0, 59.0 ],
+					"text" : "/x : 33,\n/y : 43,\n/z : 1419"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"id" : "obj-15",
+					"maxclass" : "o.display",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 979.0, 439.0, 150.0, 33.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-10",
+					"linecount" : 3,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.compose.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 1007.0, 364.5, 146.0, 51.0 ],
+					"text" : "{\n/x : 22\n}",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-12",
+					"linecount" : 3,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.compose.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 950.0, 34.0, 146.0, 51.0 ],
+					"text" : "{\n/x : 22\n}",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-11",
+					"linecount" : 5,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"o.se_initfile" : "o.display.ose",
+					"outlettype" : [ "FullPacket" ],
+					"patching_rect" : [ 903.0, 212.0, 266.0, 89.0 ],
+					"text" : "{\n /x : 33,\n /y : 43,\n /z : 1419\n}",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-9",
+					"linecount" : 3,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"o.se_initfile" : "o.expr.codebox.ose",
+					"outlettype" : [ "FullPacket", "FullPacket" ],
+					"patching_rect" : [ 903.0, 124.0, 141.0, 51.0 ],
+					"text" : "/x = 33,\n/y = /x + 10,\n/z = /x * /y",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-8",
+					"linecount" : 4,
+					"maxclass" : "o.se.gui",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"o.se_initfile" : "o.expr.codebox.ose",
+					"outlettype" : [ "FullPacket", "FullPacket" ],
+					"patching_rect" : [ 227.0, 591.0, 84.0, 91.0 ],
+					"text" : "{\n/foo : [1, 2, 3],\n/bar : [4, 6, 7]\n}",
+					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
 					"id" : "obj-7",
 					"maxclass" : "o.compose",
 					"numinlets" : 2,
@@ -59,12 +175,14 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-6",
+					"linecount" : 3,
 					"maxclass" : "o.se.gui",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"o.se_initfile" : "o.compose.ose",
 					"outlettype" : [ "FullPacket" ],
-					"patching_rect" : [ 600.0, 472.0, 146.0, 24.0 ],
+					"patching_rect" : [ 600.0, 472.0, 146.0, 51.0 ],
+					"text" : "{\n /foo : 10\n}",
 					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 				}
 
@@ -112,9 +230,9 @@
 					"linecount" : 3,
 					"maxclass" : "o.se.gui",
 					"numinlets" : 2,
-					"numoutlets" : 1,
+					"numoutlets" : 2,
 					"o.se_initfile" : "o.expr.codebox.ose",
-					"outlettype" : [ "FullPacket" ],
+					"outlettype" : [ "FullPacket", "FullPacket" ],
 					"patching_rect" : [ 435.0, 147.0, 300.0, 51.0 ],
 					"text" : "{\n/@/bloo : [\"/$/foo\", \"/$/bar\", \"/!/push\"]\n}",
 					"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
@@ -193,6 +311,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-15", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-13", 0 ]
 				}
@@ -226,13 +358,33 @@
 				}
 
 			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"order" : 0,
+					"source" : [ "obj-9", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-16", 0 ],
+					"order" : 1,
+					"source" : [ "obj-9", 0 ]
+				}
+
+			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "o.se.gui.mxo",
+				"name" : "o.compose.mxo",
 				"type" : "iLaX"
 			}
 , 			{
-				"name" : "o.compose.mxo",
+				"name" : "o.display.mxo",
+				"type" : "iLaX"
+			}
+, 			{
+				"name" : "o.se.gui.mxo",
 				"type" : "iLaX"
 			}
  ],

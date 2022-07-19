@@ -2,7 +2,11 @@
 /!/load
 /!/clear
 
-/s/o.se.oscbn.so
+/#/ /s/o.se.oscbn.so
+/#/ /!/load
+/#/ /<</_e
+
+/s/o.se.o.expr.so
 /!/load
 /<</_e
 
@@ -27,7 +31,7 @@
 /'/!/bundle/all
 /'/!/pop
 /'/!/nip
-/'/!/oscbn/parse
+/'/!/o.expr/parse
 /'/>/_x
 /'/!/swap
 /'/s//expr
@@ -39,10 +43,13 @@
 
 /'/!/drop
 /'/$/expr
+/#/ /'/!/blob/toelem
+/#/ /'/!/exec2
+/'/!/o.expr/eval
 /'/!/blob/toelem
-/'/!/exec2
 /'/$/out
 /'/!/outlet
+/'/!/drop
 /!/bundle/all
 /s/FullPacket
 /!/@
@@ -55,17 +62,14 @@
 /'/!/2drop
 /'/!/make/bundle
 /'/$/expr
+/'/!/o.expr/eval
 /'/!/blob/toelem
-/'/!/exec2
 /'/$/out
 /'/!/outlet
+/'/!/drop
 /!/bundle/all
 /s/mousedown
 /!/@
-
-/'/!/drop
-/!/bundle/all
-/@/hook/gui/finalize
 
 /$/db/enter
 /@/exception
@@ -83,6 +87,10 @@
 /!/make/bundle
 /@/db/end
 
+/'/!/clear
+/!/bundle/all
+/@/hook/gui/finalize
+
 /#/ store our env in the _x bundle
 /'/>/_e
 /'/</_x
@@ -98,7 +106,7 @@
 
 /#/ else
 /!/make/bundle
-/'/!/oscbn/parse
+/'/!/o.expr/parse
 /!/push
 
 /#/ then

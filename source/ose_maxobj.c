@@ -467,25 +467,28 @@ void ose_maxobj_processArgs(ose_bundle osevm,
 /* class and subclass */
 
 void ose_maxobj_loadSubclass_impl(ose_maxobj *x,
+                                  ose_bundle osevm,
                                   const char * const filename)
 {
-    ose_bundle vm_i = OSEVM_INPUT(x->osevm);
+    ose_bundle vm_i = OSEVM_INPUT(osevm);
     ose_pushMessage(vm_i, OSE_ADDRESS_ANONVAL,
                     OSE_ADDRESS_ANONVAL_LEN,
                     2,
                     OSETT_STRING, filename,
                     OSETT_STRING, "/!/load");
-    ose_maxobj_run(x, x->osevm);
+    ose_maxobj_run(x, osevm);
 }
 
-void ose_maxobj_loadSubclass(ose_maxobj *x, t_symbol *sym)
+void ose_maxobj_loadSubclass(ose_maxobj *x,
+                             ose_bundle osevm,
+                             t_symbol *sym)
 {
     if(sym->s_name[4])
     {
         char filename[MAX_PATH_CHARS];
         snprintf(filename, MAX_PATH_CHARS,
                  "%s.ose", sym->s_name + 5);
-        ose_maxobj_loadSubclass_impl(x, filename);
+        ose_maxobj_loadSubclass_impl(x, osevm, filename);
     }
 }
 
@@ -497,14 +500,14 @@ void ose_maxobj_FullPacket_impl(ose_maxobj *x, ose_bundle osevm,
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_pushBlob(vm_s, (int32_t)len, (char *)ptr);
     ose_blobToElem(vm_s);
-    ose_maxobj_methodFinalize(x, osevm,
-                              "FullPacket",
-                              strlen("FullPacket"));
 }
 
 void ose_maxobj_FullPacket(ose_maxobj *x, long len, long ptr)
 {
     ose_maxobj_FullPacket_impl(x, x->osevm, len, ptr);
+    ose_maxobj_methodFinalize(x, x->osevm,
+                              "FullPacket",
+                              strlen("FullPacket"));
 }
 
 void ose_maxobj_anything_impl(ose_maxobj *x,
@@ -532,8 +535,6 @@ void ose_maxobj_anything_impl(ose_maxobj *x,
         }
         ose_push(vm_s);
     }
-    ose_maxobj_methodFinalize(x, osevm,
-                              "anything", strlen("anything"));
 }
     
 void ose_maxobj_anything(ose_maxobj *x,
@@ -542,6 +543,8 @@ void ose_maxobj_anything(ose_maxobj *x,
                          t_atom *av)
 {
     ose_maxobj_anything_impl(x, x->osevm, s, ac, av);
+    ose_maxobj_methodFinalize(x, x->osevm,
+                              "anything", strlen("anything"));
 }
 
 void ose_maxobj_list_impl(ose_maxobj *x,
@@ -571,7 +574,6 @@ void ose_maxobj_list_impl(ose_maxobj *x,
         	ose_push(vm_s);
         }
     }
-    ose_maxobj_methodFinalize(x, osevm, "list", strlen("list"));
 }
 
 void ose_maxobj_list(ose_maxobj *x,
@@ -580,40 +582,41 @@ void ose_maxobj_list(ose_maxobj *x,
                      t_atom *av)
 {
     ose_maxobj_list_impl(x, x->osevm, s, ac, av);
+    ose_maxobj_methodFinalize(x, x->osevm, "list", strlen("list"));
 }
 
 void ose_maxobj_float_impl(ose_maxobj *x, ose_bundle osevm, double f)
 {
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_pushFloat(vm_s, (float)f);
-    ose_maxobj_methodFinalize(x, osevm, "float", strlen("float"));
 }
 
 void ose_maxobj_float(ose_maxobj *x, double f)
 {
     ose_maxobj_float_impl(x, x->osevm, f);
+    ose_maxobj_methodFinalize(x, x->osevm, "float", strlen("float"));
 }
 
 void ose_maxobj_int_impl(ose_maxobj *x, ose_bundle osevm, long l)
 {
     ose_bundle vm_s = OSEVM_STACK(osevm);
     ose_pushInt32(vm_s, (int32_t)l);
-    ose_maxobj_methodFinalize(x, osevm, "int", strlen("int"));
 }
 
 void ose_maxobj_int(ose_maxobj *x, long l)
 {
     ose_maxobj_int_impl(x, x->osevm, l);
+    ose_maxobj_methodFinalize(x, x->osevm, "int", strlen("int"));
 }
 
 void ose_maxobj_bang_impl(ose_maxobj *x, ose_bundle osevm)
 {
-    ose_maxobj_methodFinalize(x, osevm, "bang", strlen("bang"));
 }
 
 void ose_maxobj_bang(ose_maxobj *x)
 {
     ose_maxobj_bang_impl(x, x->osevm);
+    ose_maxobj_methodFinalize(x, x->osevm, "bang", strlen("bang"));
 }
 
 void ose_maxobj_loadbang(ose_maxobj *x)

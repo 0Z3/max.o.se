@@ -36,6 +36,12 @@
 /s/mousedown
 /!/@
 
+/'/!/drop
+/'/!/2drop
+/!/bundle/all
+/s/mouseup
+/!/@
+
 /#/ else
 /#/ (ignore)
 /!/make/bundle
